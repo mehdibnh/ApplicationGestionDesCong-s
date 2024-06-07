@@ -6,25 +6,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-
-public class Historique {
+public class Reclamation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idConge;
-    private Date dateModification;
-    private TypeOperations typeOperations;
-    private String description;
+    private Long idReclamation;
 
-    @ManyToMany
-    private Set<Conge> conges;
+    private String titre;
+    //private Status status;
+
+    @ManyToOne
+    private Employee employee;
 }

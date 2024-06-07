@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,5 +26,17 @@ public class Employee {
     private String password;
 
     private int soldeConge;
+
+    @ManyToOne
+    private Equipe equipe;
+
+    @ManyToOne
+    private Employee employee;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Conge> conges;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Reclamation> reclamations;
 
 }

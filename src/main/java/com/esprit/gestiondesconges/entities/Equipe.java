@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -16,4 +19,11 @@ public class Equipe {
     private Long idEquipe;
     private String nomEquipe;
     private Long nombrePersonnes;
+
+    @ManyToOne
+    private Departement departement;
+
+    @OneToMany(mappedBy = "equipe")
+    private Set<Employee> employees;
+
 }

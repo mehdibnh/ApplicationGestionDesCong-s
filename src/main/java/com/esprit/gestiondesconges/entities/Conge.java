@@ -1,11 +1,19 @@
 package com.esprit.gestiondesconges.entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Conge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,4 +23,10 @@ public class Conge {
     private int nombreDeJours;
     private TypeConge typeConge;
     private boolean certifié;
+
+    @ManyToMany
+    private Set<Historique> historiques;
+
+    @ManyToOne
+    private Employee employee;
 }

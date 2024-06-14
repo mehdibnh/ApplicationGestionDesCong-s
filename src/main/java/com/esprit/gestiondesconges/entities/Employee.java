@@ -1,12 +1,13 @@
 package com.esprit.gestiondesconges.entities;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -16,27 +17,21 @@ import java.util.Set;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEmployee;
-    private  String nom;
-    private  String prenom;
-    private  String email;
-    private Date dateNaissance;
-    private Date dateRecrutement;
-    private  String salaire;
+    private Long id;
+
+    private String nom;
+    private String prenom;
+    private String salaire;
     private String password;
+    private String equipe;
+    private String manager;
+    private int soldeConges;
 
-    private int soldeConge;
+    public Long getIdemployee() {
+        return id;
+    }
 
-    @ManyToOne
-    private Equipe equipe;
-
-    @ManyToOne
-    private Employee employee;
-
-    @OneToMany(mappedBy = "employee")
-    private Set<Conge> conges;
-
-    @OneToMany(mappedBy = "employee")
-    private Set<Reclamation> reclamations;
-
+    public void setIdemployee(Long id) {
+        this.id = id;
+    }
 }

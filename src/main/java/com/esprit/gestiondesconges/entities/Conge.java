@@ -24,7 +24,7 @@ public class Conge {
     private Date dateFin;
     private int nombreDeJours;
     @Enumerated(EnumType.STRING)
-    private TypeConge typeConge;
+    private Typeconge typeConge;
     private boolean certifié;
     @JsonIgnore
     @ManyToMany

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.lang.reflect.Type;
-import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -20,11 +19,9 @@ import java.util.Set;
 public class Historique {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idConge;
-    private Date dateModification;
-    private TypeOperations typeOperations;
-    private String description;
-
-    @ManyToMany
-    private Set<Conge> conges;
+    private Long idconge;
+    private Long idemployee;
+    private Typeconge typeconge;
+    private String Statut;
 }
+

@@ -1,5 +1,6 @@
 package com.esprit.gestiondesconges.config;
 
+import com.esprit.gestiondesconges.config.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-   // private final TokenRepository tokenRepository;
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(

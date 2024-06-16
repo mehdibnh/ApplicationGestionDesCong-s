@@ -87,11 +87,24 @@ public class CongeServices  implements ICongeServices {
 
     @Override
     public Conge accepterconge(Long idconge) {
-        return null;
+         Conge conge = congeRepo.findById(idconge).orElse(null);
+        if (conge!=null)
+       {
+          conge.setStatus("Accpter");
+          // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
+       }
+        congeRepo.save(conge); // Enregistrer les modifications du congé
+        return conge;
     }
 
     @Override
     public Conge refuser(Long idconge) {
-        return null;
+        Conge conge = congeRepo.findById(idconge).orElse(null);
+        if (conge!=null)
+        {
+            conge.setStatus("Refuser");
+        }
+        congeRepo.save(conge); // Enregistrer les modifications du congé
+        return conge;
     }
 }

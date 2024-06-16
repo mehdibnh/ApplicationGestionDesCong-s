@@ -5,6 +5,9 @@ import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
@@ -25,10 +28,22 @@ public class CongeServices  implements ICongeServices {
         java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         // Calculer le nombre de jours entre dateDebut et dateFin
-        long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
+        long totalDays = ChronoUnit.DAYS.between(dateDebut, dateFin) + 1; // inclure dateDebut et dateFin
+        long weekendDays = 0;
+
+        // Compter les samedis et dimanches
+        for (LocalDate date = dateDebut; !date.isAfter(dateFin); date = date.plusDays(1)) {
+            if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                weekendDays++;
+            }
+        }
+
+        // Calculer le nombre de jours ouvrables
+        long workingDays = totalDays - weekendDays;
 
         // Mettre à jour l'attribut nombreDeJours
-        conge.setNombreDeJours((int) nombreDeJours);
+        conge.setNombreDeJours((int) workingDays);
+
         return congeRepo.save(conge);
     }
     @Override
@@ -48,6 +63,17 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge modifierConge(Long idconge, Conge conge) {
         if (congeRepo.existsById(idconge)) {
+            conge.setStatus("en attente");
+
+            // Convertir les dates en LocalDate
+            java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            // Calculer le nombre de jours entre dateDebut et dateFin
+            long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
+
+            // Mettre à jour l'attribut nombreDeJours
+            conge.setNombreDeJours((int) nombreDeJours);
             conge.setIdConge(idconge);
             return congeRepo.save(conge);
         }

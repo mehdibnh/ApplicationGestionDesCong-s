@@ -1,13 +1,13 @@
 package com.esprit.gestiondesconges.services;
 import com.esprit.gestiondesconges.entities.Conge;
-import com.esprit.gestiondesconges.entities.Event;
 import com.esprit.gestiondesconges.repositories.IConge;
-import com.esprit.gestiondesconges.repositories.IEventRepo;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
 
 @AllArgsConstructor
 @Slf4j
@@ -18,6 +18,17 @@ public class CongeServices  implements ICongeServices {
 
     @Override
     public Conge ajouterConge(Conge conge) {
+        conge.setStatus("en attente");
+
+        // Convertir les dates en LocalDate
+        java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Calculer le nombre de jours entre dateDebut et dateFin
+        long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
+
+        // Mettre à jour l'attribut nombreDeJours
+        conge.setNombreDeJours((int) nombreDeJours);
         return congeRepo.save(conge);
     }
     @Override

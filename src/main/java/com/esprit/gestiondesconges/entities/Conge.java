@@ -19,13 +19,14 @@ public class Conge {
     @Id
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idConge;
-    private Date dateDebut;
-    private Date dateFin;
-    private int nombreDeJours;
+     long idConge;
+     Date dateDebut;
+     Date dateFin;
+     int nombreDeJours;
+     String status ;
     @Enumerated(EnumType.STRING)
-    private TypeConge typeConge;
-    private boolean certifié;
+     TypeConge typeConge;
+     boolean certifié;
     @JsonIgnore
     @ManyToMany
     private Set<Historique> historiques;

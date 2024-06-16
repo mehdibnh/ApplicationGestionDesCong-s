@@ -84,4 +84,14 @@ public class CongeServices  implements ICongeServices {
     public List<Conge> recupererListeConge() {
         return congeRepo.findAll();
     }
+
+    @Override
+    public Conge accepterconge(Long idconge) {
+        return null;
+    }
+
+    @Override
+    public Conge refuser(Long idconge) {
+        return null;
+    }
 }

@@ -1,3 +1,5 @@
 Calculer le nombre de jours entre deux dates.
 Mettre ce statut en attente lors de l'ajout d'un congé.
 Soustraire le nombre de samedis et dimanches du total des jours
+Méthode pour accepter le congé 
+Méthode pour refuser le congé

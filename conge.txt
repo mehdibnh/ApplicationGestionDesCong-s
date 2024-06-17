@@ -1,9 +1,8 @@
-Calculer le nombre de jours entre deux dates.
-Mettre ce statut en attente lors de l'ajout d'un congé.
+Calculer le nombre de jours entre deux dates
+Définir le statut "En attente" automatiquement lors de l'ajout d'un congé
 Soustraire le nombre de samedis et dimanches du total des jours
-Métheode pour acceptr le congé
-Méthode pour refuser le congé
-Notifications et rappels par email et SMS :
-Synchronisation avec les calendriers (Outlook, Google Calendar) :
-Méthode Spring avec planification (scheduler) :
-Annulation automatique des congés lorsque la date de début est atteinte et que le statut du congé est encore en attente.
+Méthode pour accepter le congé avec trois conditions (statut = en attente, le congé existe, le nombre de jours est suffisant)
+Méthode pour refuser le congé avec deux conditions (statut = en attente, le congé existe)
+Notifications et rappels par email et SMS
+Synchronisation avec les calendriers (Outlook, Google Calendar)
+Méthode Spring avec planification (scheduler) pour annuler automatique des congés lorsque la date de début est atteinte et que le statut du congé est encore en attente.

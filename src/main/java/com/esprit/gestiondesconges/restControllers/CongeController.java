@@ -38,4 +38,18 @@ public class CongeController {
     public List<Conge> recupererListeConge() {
         return congeServices.recupererListeConge();
     }
+
+    @PutMapping("/accepter/{idConge}")
+    public Conge accepterconge(@PathVariable("idConge") Long idconge) {
+        return congeServices.accepterconge(idconge);
+    }
+    @PutMapping("/refuse/{idConge}")
+    public Conge refuser(@PathVariable("idConge") Long idconge) {
+        return congeServices.refuser(idconge);
+    }
+
+    @PutMapping("/annuler/{idConge}")
+    public Conge annuler(@PathVariable("idConge") Long idconge) {
+        return congeServices.annuler(idconge);
+    }
 }

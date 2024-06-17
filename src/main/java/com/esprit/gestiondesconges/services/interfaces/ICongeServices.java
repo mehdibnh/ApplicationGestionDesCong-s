@@ -11,4 +11,5 @@ public interface ICongeServices {
     List<Conge> recupererListeConge();
     Conge accepterconge(Long idconge);
     Conge refuser(Long idconge);
+    Conge annuler(Long idconge);
 }

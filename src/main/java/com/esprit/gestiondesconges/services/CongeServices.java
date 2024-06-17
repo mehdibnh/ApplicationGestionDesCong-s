@@ -4,6 +4,7 @@ import com.esprit.gestiondesconges.repositories.IConge;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -86,6 +87,7 @@ public class CongeServices  implements ICongeServices {
         return conge;
     }
     @Override
+    @Scheduled(cron = "0 * * * * *")
     public List<Conge> annuler() {
         LocalDate dateSysteme = LocalDate.now();
         List<Conge> tousLesConges = congeRepo.findAll();
@@ -107,8 +109,9 @@ public class CongeServices  implements ICongeServices {
             conge.setStatus("Annuler");
             congeRepo.save(conge);
         });
-
+        System.out.println("test shudel");
         return congesAAnnuler;
+
     }
 }
 

@@ -3,6 +3,8 @@ Définir le statut "En attente" automatiquement lors de l'ajout d'un congé
 Soustraire le nombre de samedis et dimanches du total des jours
 Méthode pour accepter le congé avec trois conditions (statut = en attente, le congé existe, le nombre de jours est suffisant)
 Méthode pour refuser le congé avec deux conditions (statut = en attente, le congé existe)
+Méthode planification (scheduler) pour annuler automatique des congés lorsque la date de début est egale la date de system
+
+
 Notifications et rappels par email et SMS
 Synchronisation avec les calendriers (Outlook, Google Calendar)
-Méthode Spring avec planification (scheduler) pour annuler automatique des congés lorsque la date de début est atteinte et que le statut du congé est encore en attente.

@@ -48,8 +48,8 @@ public class CongeController {
         return congeServices.refuser(idconge);
     }
 
-    @PutMapping("/annuler/{idConge}")
-    public Conge annuler(@PathVariable("idConge") Long idconge) {
-        return congeServices.annuler(idconge);
+    @PutMapping("/annuler")
+    public List<Conge> annuler() {
+        return congeServices.annuler();
     }
 }

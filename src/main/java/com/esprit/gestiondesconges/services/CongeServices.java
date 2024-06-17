@@ -7,14 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
+import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 @Service
 public class CongeServices  implements ICongeServices {
-   IConge congeRepo;
+    IConge congeRepo;
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatus("en attente");
@@ -62,21 +65,19 @@ public class CongeServices  implements ICongeServices {
     }
     @Override
     public Conge accepterconge(Long idconge) {
-         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && "En attente".equals(conge.getStatus()))
-       {
-          conge.setStatus("Accepter");
-          // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
-           congeRepo.save(conge);
+        Conge conge = congeRepo.findById(idconge).orElse(null);
+        if (conge != null && "En attente".equals(conge.getStatus())) {
+            conge.setStatus("Accepter");
+            // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
+            congeRepo.save(conge);
 
-       }
+        }
         return conge;
     }
     @Override
     public Conge refuser(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && "En attente".equals(conge.getStatus()))
-        {
+        if (conge != null && "En attente".equals(conge.getStatus())) {
             conge.setStatus("Refuse");
             // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
             congeRepo.save(conge);
@@ -85,7 +86,30 @@ public class CongeServices  implements ICongeServices {
         return conge;
     }
     @Override
-    public Conge annuler(Long idconge) {
-        return null;
+    public List<Conge> annuler() {
+        LocalDate dateSysteme = LocalDate.now();
+        List<Conge> tousLesConges = congeRepo.findAll();
+        List<Conge> congesAAnnuler = tousLesConges.stream()
+                .filter(conge -> {
+                    LocalDate dateDebutConge = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    return dateDebutConge != null &&
+                            dateDebutConge.getMonth() == dateSysteme.getMonth() &&
+                            dateDebutConge.getDayOfMonth() == dateSysteme.getDayOfMonth();
+                })
+                .collect(Collectors.toList());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        congesAAnnuler.forEach(conge -> {
+            String dateDebutFormatee = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
+            String dateFinFormatee = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
+            System.out.println("Congé à annuler - ID: " + conge.getIdConge() +
+                    ", Date de début: " + dateDebutFormatee +
+                    ", Date de fin: " + dateFinFormatee);
+            conge.setStatus("Annuler");
+            congeRepo.save(conge);
+        });
+
+        return congesAAnnuler;
     }
 }
+
+

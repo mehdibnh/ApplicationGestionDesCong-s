@@ -69,6 +69,15 @@
             <artifactId>spring-boot-starter</artifactId>
             <version>2.6.3</version> <!-- Assurez-vous d'utiliser une version stable et compatible -->
         </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>8.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
      </dependencies>
     <build>
         <plugins>

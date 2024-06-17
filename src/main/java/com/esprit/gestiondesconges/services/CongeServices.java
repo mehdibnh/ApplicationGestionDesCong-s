@@ -2,14 +2,16 @@ package com.esprit.gestiondesconges.services;
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.repositories.IConge;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.lookups.v1.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
@@ -87,7 +89,7 @@ public class CongeServices  implements ICongeServices {
         return conge;
     }
     @Override
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * ?")
     public List<Conge> annuler() {
         LocalDate dateSysteme = LocalDate.now();
         List<Conge> tousLesConges = congeRepo.findAll();
@@ -103,16 +105,29 @@ public class CongeServices  implements ICongeServices {
         congesAAnnuler.forEach(conge -> {
             String dateDebutFormatee = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
             String dateFinFormatee = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
-            System.out.println("Congé à annuler - ID: " + conge.getIdConge() +
-                    ", Date de début: " + dateDebutFormatee +
-                    ", Date de fin: " + dateFinFormatee);
+          if ("En attente".equals(conge.getStatus()))
+          {
             conge.setStatus("Annuler");
             congeRepo.save(conge);
+          }
         });
-        System.out.println("test shudel");
         return congesAAnnuler;
-
     }
+
+    @Override
+    public Conge SmsService(Long idconge) {
+        Conge conge = congeRepo.findById(idconge).orElse(null);
+
+        return null;
+    }
+    public void sendSms() {
+        Message message = Message.creator(
+                new PhoneNumber(98184680),
+                new PhoneNumber(98184680),
+                text
+        ).create();
+    }
+
 }
 
 

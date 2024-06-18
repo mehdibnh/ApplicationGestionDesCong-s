@@ -114,20 +114,6 @@ public class CongeServices  implements ICongeServices {
         return congesAAnnuler;
     }
 
-    @Override
-    public Conge SmsService(Long idconge) {
-        Conge conge = congeRepo.findById(idconge).orElse(null);
-
-        return null;
-    }
-    public void sendSms() {
-        Message message = Message.creator(
-                new PhoneNumber(98184680),
-                new PhoneNumber(98184680),
-                text
-        ).create();
-    }
-
 }
 
 

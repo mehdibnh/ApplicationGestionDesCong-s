@@ -12,5 +12,4 @@ public interface ICongeServices {
     Conge accepterconge(Long idconge);
     Conge refuser(Long idconge);
     List<Conge> annuler();
-    Conge  SmsService(Long idconge) ;
 }

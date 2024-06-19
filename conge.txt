@@ -4,6 +4,7 @@ Soustraire le nombre de samedis et dimanches du total des jours
 Méthode pour accepter le congé avec trois conditions (statut = en attente, le congé existe, le nombre de jours est suffisant)
 Méthode pour refuser le congé avec deux conditions (statut = en attente, le congé existe)
 Méthode (scheduler) pour annuler automatique des congés lorsque la jour de la date de début est egale la jour de la date de system avec une condition (statut = en attente )
+affecter un employer a un conge qui lenoyer
 
 
 Notifications et rappels par email a utlisateur (accecpeter/annuler/refuse)

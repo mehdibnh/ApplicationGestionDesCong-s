@@ -17,13 +17,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class Conge {
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     long idConge;
-     Date dateDebut;
-     Date dateFin;
-     int nombreDeJours;
-     String status ;
+    private long idConge;
+    private Date dateDebut;
+    private   Date dateFin;
+    private int nombreDeJours;
+    private  String status ;
     @Enumerated(EnumType.STRING)
      TypeConge typeConge;
      boolean certifié;

@@ -1,12 +1,12 @@
 package com.esprit.gestiondesconges.services;
 import com.esprit.gestiondesconges.entities.Conge;
-import com.esprit.gestiondesconges.repositories.IConge;
+import com.esprit.gestiondesconges.entities.Employee;
+import com.esprit.gestiondesconges.repositories.ICongeRepo;
+import com.esprit.gestiondesconges.repositories.IEmployerRepo;
+import com.esprit.gestiondesconges.repositories.IEventRepo;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.rest.lookups.v1.PhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class CongeServices  implements ICongeServices {
-    IConge congeRepo;
+    ICongeRepo congeRepo;
+    IEmployerRepo emplpoerRepo ;
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatus("en attente");
@@ -112,6 +113,20 @@ public class CongeServices  implements ICongeServices {
           }
         });
         return congesAAnnuler;
+    }
+
+    @Override
+    public Conge effecteremployeraconge(Long idconge, Long idemployer) {
+        Conge conge = congeRepo.findById(idconge).orElse(null);
+        Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
+        if (conge != null && employee != null) {
+            conge.setEmployee(employee);
+            congeRepo.save(conge);
+            return conge;
+        } else {
+            log.error("Conge or Employer not found");
+        }
+        return conge;
     }
 
 }

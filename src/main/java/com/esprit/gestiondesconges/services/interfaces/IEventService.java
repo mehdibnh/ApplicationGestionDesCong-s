@@ -7,4 +7,5 @@ public interface IEventService {
     Event récupérerEvent(Long idEvent);
     Event modifierEvent(Long idEvent, Event event);
     List<Event> récupérerListeEvents();
+
 }

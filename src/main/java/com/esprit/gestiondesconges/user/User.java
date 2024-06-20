@@ -1,6 +1,6 @@
 package com.esprit.gestiondesconges.user;
 
-import com.esprit.gestiondesconges.Role;
+import com.esprit.gestiondesconges.user.Role;
 import com.esprit.gestiondesconges.config.token.Token;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

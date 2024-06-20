@@ -1,26 +1,46 @@
-package com.esprit.gestiondesconges;
+package com.esprit.gestiondesconges.user;
 
-import com.esprit.gestiondesconges.user.Permission;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.esprit.gestiondesconges.user.Permission.*;
 
+
+@RequiredArgsConstructor
 public enum Role {
 
-  ADMIN, EMPLOYEE;
+  USER(Collections.emptySet()),
+  ADMIN(
+          Set.of(
+                  ADMIN_READ,
+                  ADMIN_UPDATE,
+                  ADMIN_DELETE,
+                  ADMIN_CREATE,
+                  EMPLOYEE_READ,
+                  EMPLOYEE_UPDATE,
+                  EMPLOYEE_DELETE,
+                  EMPLOYEE_CREATE
+          )
+  ),
+  EMPLOYEE(
+          Set.of(
+                  EMPLOYEE_READ,
+                  EMPLOYEE_UPDATE,
+                  EMPLOYEE_DELETE,
+                  EMPLOYEE_CREATE
+          )
+  )
 
+  ;
 
   @Getter
   private final Set<Permission> permissions;
-
-  Role() {
-  }
 
   public List<SimpleGrantedAuthority> getAuthorities() {
     var authorities = getPermissions()

@@ -3,8 +3,11 @@ package com.esprit.gestiondesconges.restControllers;
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.repositories.IConge;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
+
+import com.esprit.gestiondesconges.services.interfaces.IHistoriqueService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -13,13 +16,18 @@ import java.util.List;
 @RequestMapping("/conge")
 public class CongeController {
     ICongeServices congeServices;
+    IHistoriqueService historiqueService;
     @PostMapping("/ajouter")
     public Conge ajouterConge(@RequestBody Conge conge) {
-        return congeServices.ajouterConge(conge);
+        Conge conge1 = congeServices.ajouterConge(conge);
+        historiqueService.createHistoriqueEntry(conge1);
+
+        return conge1;
     }
 
     @DeleteMapping("/supprimer/{idConge}")
     public Conge supprimerConge(@PathVariable("idConge") Long idconge) {
+        historiqueService.createHistoriqueEntry(congeServices.recupererConge(idconge));
         return
                 congeServices.supprimerConge(idconge);
     }
@@ -31,6 +39,7 @@ public class CongeController {
 
     @PutMapping("/modifier/{idConge}")
     public Conge modifierConge(@PathVariable("idConge") Long idconge, @RequestBody Conge conge) {
+        historiqueService.createHistoriqueEntry(conge);
         return congeServices.modifierConge(idconge, conge);
     }
 

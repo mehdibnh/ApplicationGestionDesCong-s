@@ -26,6 +26,9 @@ public class Conge {
     @Enumerated(EnumType.STRING)
     private Typeconge typeConge;
     private boolean certifié;
+    @OneToMany
+    private Set <Historique> Historique;
+
     @JsonIgnore
     @ManyToMany
     private Set<Historique> historiques;

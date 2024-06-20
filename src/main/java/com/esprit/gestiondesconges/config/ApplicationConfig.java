@@ -3,6 +3,7 @@ package com.esprit.gestiondesconges.config;
 /*import com.alibou.security.auditing.ApplicationAuditAware;
 import com.alibou.security.user.UserRepository;*/
 import com.esprit.gestiondesconges.repositories.EmployeRepo;
+import com.esprit.gestiondesconges.user.UserRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,11 +23,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final EmployeRepo repository;
+    private final UserRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) repository.findByEmail(username)
+        return username ->  repository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

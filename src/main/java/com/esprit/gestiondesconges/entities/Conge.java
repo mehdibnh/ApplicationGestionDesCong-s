@@ -22,14 +22,16 @@ public class Conge {
     private Date dateDebut;
     private   Date dateFin;
     private int nombreDeJours;
-    private  String status ;
+    @Enumerated(EnumType.STRING)
+    TypeStatut statut ;
     @Enumerated(EnumType.STRING)
      TypeConge typeConge;
      boolean certifié;
     @JsonIgnore
-    @ManyToMany
+    @OneToMany
     private Set<Historique> historiques;
     @JsonIgnore
     @ManyToOne
     private Employee employee;
+
 }

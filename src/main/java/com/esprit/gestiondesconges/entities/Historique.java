@@ -24,7 +24,6 @@ public class Historique {
     private Date dateModification;
     private TypeOperations typeOperations;
     private String description;
-
-    @ManyToMany
-    private Set<Conge> conges;
+    @ManyToOne
+    private Conge conge;
 }

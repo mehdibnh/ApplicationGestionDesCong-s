@@ -9,4 +9,4 @@ affecter un employer a un conge qui lenoyer
 
 Notifications et rappels par email a utlisateur (accecpeter/annuler/refuse)
 Notifications et rappels par sms a utlisateur (accecpeter/annuler/refuse)
-Synchronisation avec les calendriers (Outlook, Google Calendar)
+

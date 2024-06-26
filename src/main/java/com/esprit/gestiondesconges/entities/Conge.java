@@ -34,4 +34,11 @@ public class Conge {
     @ManyToOne
     private Employee employee;
 
+    public TypeStatut getStatut() {
+        return statut;
+    }
+    public void setStatut(TypeStatut statut) {
+        this.statut = statut;
+    }
+
 }

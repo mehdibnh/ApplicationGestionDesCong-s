@@ -6,14 +6,8 @@ Méthode pour refuser le congé avec deux conditions (statut = en attente, le co
 Méthode (scheduler) pour annuler automatique des congés lorsque la jour de la date de début est egale la jour de la date de system avec une condition (statut = en attente )
 Affecter un employer a un conge qui lenoyer
 
-
 Notifications et rappels par email a utlisateur (accecpeter/annuler/refuse)
 Notifications et rappels par sms a utlisateur (accecpeter/annuler/refuse)
-<<<<<<< HEAD
-
-=======
 Synchronisation avec les calendriers (Outlook, Google Calendar)
 
 
-modifer employer repo de telque compatible avec EmployeeRepo
->>>>>>> 49955eccdfd336ba5045039692e14be8ab8ad029

@@ -36,6 +36,7 @@ public class CongeServices  implements ICongeServices {
             }
         }
         long workingDays = totalDays - weekendDays;
+         workingDays =+ 1 ;
         conge.setNombreDeJours((int) workingDays);
         return congeRepo.save(conge);
     }
@@ -58,6 +59,7 @@ public class CongeServices  implements ICongeServices {
             java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
+            nombreDeJours =+1 ;
             conge.setNombreDeJours((int) nombreDeJours);
             conge.setIdConge(idconge);
             return congeRepo.save(conge);

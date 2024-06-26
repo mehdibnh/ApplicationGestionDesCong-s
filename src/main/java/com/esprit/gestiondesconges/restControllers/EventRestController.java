@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/event")
+
 public class EventRestController {
     IEventService eventService;
 

@@ -82,7 +82,7 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge refuser(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && "En attente".equals(conge.getStatut())) {
+        if (conge != null ) {
             conge.setStatut(TypeStatut.refuser);
             // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
             congeRepo.save(conge);

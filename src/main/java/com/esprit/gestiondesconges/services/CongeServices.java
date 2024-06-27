@@ -37,7 +37,7 @@ public class CongeServices  implements ICongeServices {
             }
         }
         long workingDays = totalDays - weekendDays;
-         workingDays = workingDays + 1 ;
+       //  workingDays = workingDays + 1 ;
         conge.setNombreDeJours((int) workingDays);
         return congeRepo.save(conge);
     }

@@ -1,5 +1,5 @@
 package com.esprit.gestiondesconges.entities;
 
 public enum TypeConge {
-    Maladie,SansSolde,Payé,rtt,congespayes
+   Maladie,Annuel,SansSolde,Maternite,Paternite,Sabbatique
 }

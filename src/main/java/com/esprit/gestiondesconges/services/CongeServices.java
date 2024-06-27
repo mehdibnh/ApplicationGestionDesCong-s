@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 public class CongeServices  implements ICongeServices {
     ICongeRepo congeRepo;
     IEmployerRepo emplpoerRepo ;
-    // @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-   // private TypeStatut statut;
+
+
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatut(TypeStatut.enattente);
@@ -37,7 +37,7 @@ public class CongeServices  implements ICongeServices {
             }
         }
         long workingDays = totalDays - weekendDays;
-         workingDays =+ 1 ;
+         workingDays = workingDays + 1 ;
         conge.setNombreDeJours((int) workingDays);
         return congeRepo.save(conge);
     }
@@ -55,18 +55,31 @@ public class CongeServices  implements ICongeServices {
     }
     @Override
     public Conge modifierConge(Long idconge, Conge conge) {
-        if (congeRepo.existsById(idconge)&& conge.getStatut()==TypeStatut.enattente) {
-           // conge.setStatut(TypeStatut.enattente);
-            java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
-            nombreDeJours =+1 ;
-            conge.setNombreDeJours((int) nombreDeJours);
-            conge.setIdConge(idconge);
-            return congeRepo.save(conge);
+        Conge conge1 = new Conge() ;
+        conge1 = congeRepo.findById(idconge).orElse(null);
+        if (conge1.getStatut()==TypeStatut.enattente) {
+
+            if ((conge.getDateDebut()==null )||(conge.getDateFin()==null))
+            {
+                conge1.setTypeConge(conge.getTypeConge());
+                congeRepo.save(conge1);
+                return  conge1 ;
+            }else
+                System.out.println();
+                java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
+                nombreDeJours = nombreDeJours + 1;
+                conge1.setNombreDeJours((int) nombreDeJours);
+                conge1.setIdConge(idconge);
+                conge1.setDateDebut(conge.getDateDebut());
+                conge1.setDateFin(conge.getDateFin());
+                congeRepo.save(conge1);
+                return conge1;
         }
-        return null;
+        return  conge1 ;
     }
+
     @Override
     public List<Conge> recupererListeConge() {
         return congeRepo.findAll();
@@ -123,7 +136,7 @@ public class CongeServices  implements ICongeServices {
         Conge conge = congeRepo.findById(idconge).orElse(null);
         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         if (conge != null && employee != null) {
-            conge.setEmployee(employee);
+        //    conge.setEmployee(employee);
             congeRepo.save(conge);
             return conge;
         } else {

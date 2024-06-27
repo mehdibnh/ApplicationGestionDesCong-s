@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Conge {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idConge;
@@ -26,19 +27,11 @@ public class Conge {
     TypeStatut statut ;
     @Enumerated(EnumType.STRING)
      TypeConge typeConge;
-     boolean certifié;
+     boolean certifie;
     @JsonIgnore
     @OneToMany
     private Set<Historique> historiques;
     @JsonIgnore
     @ManyToOne
     private Employee employee;
-
-    public TypeStatut getStatut() {
-        return statut;
-    }
-    public void setStatut(TypeStatut statut) {
-        this.statut = statut;
-    }
-
 }

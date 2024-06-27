@@ -32,10 +32,8 @@ public class Employee {
 
     @ManyToOne
     private Employee employee;
-
     @OneToMany(mappedBy = "employee")
     private Set<Conge> conges;
-
     @OneToMany(mappedBy = "employee")
     private Set<Reclamation> reclamations;
 

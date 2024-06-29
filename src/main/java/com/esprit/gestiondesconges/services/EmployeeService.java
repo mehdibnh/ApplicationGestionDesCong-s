@@ -29,15 +29,16 @@ public class EmployeeService implements IemployeeService {
     public Employee updateEmployee(Long idEmployee, Employee employeeDetails) {
         Optional<Employee> existingEmployee = employeeRepository.findById(idEmployee);
         if (existingEmployee.isPresent()) {
-            Employee updatedEmployee = existingEmployee.get();
-            updatedEmployee.setNom(employeeDetails.getNom());
-            // Set other fields as needed
-            log.info("Updating employee: " + updatedEmployee.toString());
-            return employeeRepository.save(updatedEmployee);
+            //Employee updatedEmployee = existingEmployee.get();
+
+            log.info("Updating employee: " + employeeDetails.toString());
+            return employeeRepository.save(employeeDetails);
         } else {
             throw new RuntimeException("Employee not found, cannot update.");
         }
     }
+
+
 
     @Override
     public void deleteEmployee(Long idEmployee) {

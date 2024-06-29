@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.Set;
 
+
 @Entity
 @Getter
 @Setter
@@ -17,22 +18,23 @@ import java.util.Set;
 @NoArgsConstructor
 public class Conge {
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idConge;
     private Date dateDebut;
-    private Date dateFin;
+    private   Date dateFin;
     private int nombreDeJours;
+    private  String status ;
     @Enumerated(EnumType.STRING)
-    private Typeconge typeConge;
-    private boolean certifié;
-    @OneToMany
-    private Set <Historique> Historique;
-
+    Typeconge typeConge;
+    boolean certifié;
     @JsonIgnore
     @ManyToMany
     private Set<Historique> historiques;
     @JsonIgnore
     @ManyToOne
     private Employee employee;
+
+    public void setStatusConge(String status) {
+        this.status = status;
+    }
 }

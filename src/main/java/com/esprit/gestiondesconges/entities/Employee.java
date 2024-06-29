@@ -28,4 +28,6 @@ private Set <Historique> historique;
     private String equipe;
     private String manager;
     private int soldeConges;
+    @Enumerated(EnumType.STRING)
+    private TRole role;
 }

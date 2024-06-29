@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface IConge extends JpaRepository<Conge,Long> {
 
 
+    long findByIdConge(Long idConge);
 }

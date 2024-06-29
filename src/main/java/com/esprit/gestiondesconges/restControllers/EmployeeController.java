@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
@@ -29,7 +30,6 @@ public class EmployeeController {
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return ResponseEntity.ok().body(employee);
     }
-
     @GetMapping("/search")
     public ResponseEntity<Employee> getEmployeeByName(@RequestParam String nom) {
         Employee employee = employeeService.getEmployeeByName(nom)

@@ -1,5 +1,5 @@
 package com.esprit.gestiondesconges.entities;
 
 public enum StatusConge {
-    cree, modifer, supprimer
+    cree, modifer, supprimé
 }

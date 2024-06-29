@@ -1,13 +1,10 @@
 package com.esprit.gestiondesconges.restControllers;
 
 import com.esprit.gestiondesconges.entities.Conge;
-import com.esprit.gestiondesconges.repositories.IConge;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
-
 import com.esprit.gestiondesconges.services.interfaces.IHistoriqueService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -19,15 +16,15 @@ public class CongeController {
     IHistoriqueService historiqueService;
     @PostMapping("/ajouter")
     public Conge ajouterConge(@RequestBody Conge conge) {
-        Conge conge1 = congeServices.ajouterConge(conge);
-        historiqueService.createHistoriqueEntry(conge1);
-
-        return conge1;
+        Conge congeAjoute = congeServices.ajouterConge(conge);
+        historiqueService.createHistoriqueEntry(congeAjoute);
+        return congeAjoute;
     }
+
 
     @DeleteMapping("/supprimer/{idConge}")
     public Conge supprimerConge(@PathVariable("idConge") Long idconge) {
-        historiqueService.createHistoriqueEntry(congeServices.recupererConge(idconge));
+
         return
                 congeServices.supprimerConge(idconge);
     }
@@ -39,12 +36,32 @@ public class CongeController {
 
     @PutMapping("/modifier/{idConge}")
     public Conge modifierConge(@PathVariable("idConge") Long idconge, @RequestBody Conge conge) {
-        historiqueService.createHistoriqueEntry(conge);
         return congeServices.modifierConge(idconge, conge);
     }
 
     @GetMapping("/liste")
     public List<Conge> recupererListeConge() {
         return congeServices.recupererListeConge();
+    }
+
+    @PutMapping("/accepter/{idConge}")
+    public Conge accepterconge(@PathVariable("idConge") Long idconge) {
+        return congeServices.accepterconge(idconge);
+    }
+    @PutMapping("/refuse/{idConge}")
+    public Conge refuser(@PathVariable("idConge") Long idconge) {
+        return congeServices.refuser(idconge);
+    }
+
+    @PutMapping("/annuler")
+    public List<Conge> annuler() {
+        return congeServices.annuler();
+    }
+
+    @PostMapping(path = "/affecteremployer/{idconge}/{idemployer}")
+    public Conge affecterFoyerAuniversite(@PathVariable Long idconge, @PathVariable Long idemployer) {
+        {
+            return congeServices.effecteremployeraconge (idconge ,idemployer);
+        }
     }
 }

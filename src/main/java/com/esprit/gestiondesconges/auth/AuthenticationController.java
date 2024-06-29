@@ -1,4 +1,5 @@
 package com.esprit.gestiondesconges.auth;
+import com.esprit.gestiondesconges.user.User;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,5 +42,10 @@ public class AuthenticationController {
           @RequestParam String token
   ) throws MessagingException {
     service.activateAccount(token);
+  }
+
+  @GetMapping("/change-pass-mail")
+  public void sendChangepassword(@RequestBody User user) throws MessagingException {
+     service.sendChangePasswEmail(user);
   }
 }

@@ -179,6 +179,9 @@ public class AuthenticationService {
     );
   }
 
+
+
+
   private String generateActivationCode(int length) {
     String characters = "0123456789";
     StringBuilder codeBuilder = new StringBuilder();
@@ -191,5 +194,18 @@ public class AuthenticationService {
     }
 
     return codeBuilder.toString();
+  }
+
+   void sendChangePasswEmail(User user) throws MessagingException {
+    var newToken = generateAndSaveActivationToken(user);
+
+    emailService.sendEmail(
+            user.getEmail(),
+            user.getUsername(),
+            EmailTemplateName.CHANGE_PASSWORD,
+            activationUrl,
+            newToken,
+            "Change Password"
+    );
   }
 }

@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 public class CongeServices  implements ICongeServices {
     ICongeRepo congeRepo;
     IEmployerRepo emplpoerRepo ;
+  //  int nbjpourrmployer = 0 ;
 
 
     @Override
@@ -87,9 +88,15 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && conge.getStatut()==TypeStatut.enattente) {
-            conge.setStatut(TypeStatut.accepter);
-            // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
+        // lazem if ()
+         int  soldedecongedeemployer = conge.getEmployee().getSoldeConge();
+         int  nbjourconge = conge.getNombreDeJours() ;
+         Long idemployer = conge.getEmployee().getIdEmployee();
+         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
+        if (conge != null && conge.getStatut()==TypeStatut.enattente && soldedecongedeemployer>=nbjourconge) {
+         conge.setStatut(TypeStatut.accepter);
+            employee.setSoldeConge(soldedecongedeemployer-nbjourconge);
+            emplpoerRepo.save(employee) ;
             congeRepo.save(conge);
         }
         return conge;
@@ -99,15 +106,16 @@ public class CongeServices  implements ICongeServices {
         Conge conge = congeRepo.findById(idconge).orElse(null);
         if (conge != null ) {
             conge.setStatut(TypeStatut.refuser);
-            // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
             congeRepo.save(conge);
-            System.out.println("Le congé avec ID " + idconge + " est en attente et sera accepté.");
+         //   Long idemployer = conge.getEmployee().getIdEmployee();
+        //   Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         }
         return conge;
     }
     @Override
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public List<Conge> annuler() {
+        System.out.println("maher");
         LocalDate dateSysteme = LocalDate.now();
         List<Conge> tousLesConges = congeRepo.findAll();
         List<Conge> congesAAnnuler = tousLesConges.stream()

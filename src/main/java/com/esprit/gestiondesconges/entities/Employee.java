@@ -24,7 +24,6 @@ public class Employee {
     private Date dateRecrutement;
     private  String salaire;
     private String password;
-
     private int soldeConge;
 
     @ManyToOne
@@ -37,4 +36,9 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private Set<Reclamation> reclamations;
 
+
+
+    public void setSoldeConge(int soldeConge) {
+        this.soldeConge = soldeConge;
+    }
 }

@@ -23,7 +23,6 @@ public class CongeController {
         return
                 congeServices.supprimerConge(idconge);
     }
-
     @GetMapping("/recuperer/{idConge}")
     public Conge recupererConge(@PathVariable("idConge") Long idconge) {
         return congeServices.recupererConge(idconge);

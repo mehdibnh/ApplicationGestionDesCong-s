@@ -22,11 +22,15 @@ import java.util.stream.Collectors;
 public class CongeServices  implements ICongeServices {
     ICongeRepo congeRepo;
     IEmployerRepo emplpoerRepo ;
-  //  int nbjpourrmployer = 0 ;
-
+    
 
     @Override
     public Conge ajouterConge(Conge conge) {
+       // sette la conge a la paremier employer il fauter change ca par la employer conncter
+        long idemployer = 1 ;
+        Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
+        conge.setEmployee(employee);
+        // ca
         conge.setStatut(TypeStatut.enattente);
         java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -106,9 +110,10 @@ public class CongeServices  implements ICongeServices {
         Conge conge = congeRepo.findById(idconge).orElse(null);
         if (conge != null ) {
             conge.setStatut(TypeStatut.refuser);
+            Long idemployer = conge.getEmployee().getIdEmployee();
+            Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
             congeRepo.save(conge);
-         //   Long idemployer = conge.getEmployee().getIdEmployee();
-        //   Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
+
         }
         return conge;
     }

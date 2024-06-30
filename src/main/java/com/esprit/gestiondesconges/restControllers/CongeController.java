@@ -2,6 +2,7 @@ package com.esprit.gestiondesconges.restControllers;
 
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class CongeController {
         return congeServices.accepterconge(idconge);
     }
     @PutMapping("/refuse/{idConge}")
-    public Conge refuser(@PathVariable("idConge") Long idconge) {
+    public Conge refuser(@PathVariable("idConge") Long idconge)  {
         return congeServices.refuser(idconge);
     }
 

@@ -1,5 +1,1 @@
-À faire :
-SMS ou email comme notification
-Contrôle SIA-SIS envoyé
-Trier la page des congés lus
-Droit d'accès
+trie les conge (commence par en attente )

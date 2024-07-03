@@ -38,14 +38,18 @@ public class HistoriqueService implements IHistoriqueService {
         return historiqueRepository.findByEtatConge(action);
     }
 
+
     @Override
     public Historique createHistoriqueEntry(Conge conge) {
         Historique historique = new Historique();
         historique.setConge(conge);
         historique.setAction(EtatConge.EnAttente);
         historique.setActionTimestamp(LocalDateTime.now());
-        historique.setUsername(UserContexte.getUsername());
+       // historique.setUsername(UserContexte.getUsername());
+        //historique.setUsername(conge.getEmployee().getNom());
+        historique.setEmployee(conge.getEmployee());
         historique.setStatus(StatusConge.cree);
+
         return historiqueRepository.save(historique);
     }
 
@@ -53,6 +57,7 @@ public class HistoriqueService implements IHistoriqueService {
 
     @Override
     public Historique editHistoriqueEntryById(Long idHistorique) {
+
         return null;
     }
 

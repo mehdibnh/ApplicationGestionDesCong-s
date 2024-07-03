@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
@@ -24,6 +25,9 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatus("en attente");
+     Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
+     if (e.isPresent()){
+         conge.setEmployee(e.get());}
         java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         long totalDays = ChronoUnit.DAYS.between(dateDebut, dateFin) + 1; // inclure dateDebut et dateFin
@@ -35,6 +39,7 @@ public class CongeServices  implements ICongeServices {
         }
         long workingDays = totalDays - weekendDays;
         conge.setNombreDeJours((int) workingDays);
+
         return congeRepo.save(conge);
     }
     @Override

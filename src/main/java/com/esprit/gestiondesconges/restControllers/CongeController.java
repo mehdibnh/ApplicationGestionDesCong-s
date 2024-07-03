@@ -18,7 +18,7 @@ public class CongeController {
     public Conge ajouterConge(@RequestBody Conge conge) {
         Conge congeAjoute = congeServices.ajouterConge(conge);
 
-        historiqueService.createHistoriqueEntry(conge);
+        historiqueService.createHistoriqueEntry(congeAjoute);
         return conge;
     }
 

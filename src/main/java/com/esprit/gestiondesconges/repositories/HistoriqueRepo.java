@@ -24,6 +24,7 @@ import java.util.Optional;
     @Query("SELECT h FROM Historique h WHERE h.idHistorique = :id")
     Optional<Historique> findHistoriqueById(@Param("id") Long id);
 
+
 }
 
 

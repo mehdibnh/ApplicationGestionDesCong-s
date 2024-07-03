@@ -17,8 +17,9 @@ public class CongeController {
     @PostMapping("/ajouter")
     public Conge ajouterConge(@RequestBody Conge conge) {
         Conge congeAjoute = congeServices.ajouterConge(conge);
-        historiqueService.createHistoriqueEntry(congeAjoute);
-        return congeAjoute;
+
+        historiqueService.createHistoriqueEntry(conge);
+        return conge;
     }
 
 

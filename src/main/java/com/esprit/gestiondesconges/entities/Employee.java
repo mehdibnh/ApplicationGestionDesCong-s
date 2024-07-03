@@ -1,16 +1,14 @@
 package com.esprit.gestiondesconges.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
@@ -19,7 +17,7 @@ public class Employee {
     private Long idEmployee;
 
 
-@OneToMany
+@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
 private Set <Historique> historique;
     private String nom;
     private String prenom;
@@ -27,7 +25,7 @@ private Set <Historique> historique;
     private String password;
     private String equipe;
     private String manager;
-    private int soldeConges;
+    private double soldeConges;
     @Enumerated(EnumType.STRING)
     private TRole role;
 }

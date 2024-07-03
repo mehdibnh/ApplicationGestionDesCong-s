@@ -1,6 +1,7 @@
 package com.esprit.gestiondesconges.restControllers;
 
 import com.esprit.gestiondesconges.entities.Employee;
+import com.esprit.gestiondesconges.entities.TRole;
 import com.esprit.gestiondesconges.services.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,18 @@ public class EmployeeController {
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return ResponseEntity.ok().body(employee);
     }
-
+    @GetMapping("/search/{nom}/{prenom}")
+    public ResponseEntity<Employee> getEmployeeByNameAndPrenom(@PathVariable String nom, @PathVariable String prenom) {
+        Employee employee = employeeService.getEmployeeByNameAndPrenom(nom, prenom)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        return ResponseEntity.ok().body(employee);
+    }
+@GetMapping("/search/{role}")
+    public ResponseEntity<Employee> getEmployeeByPoste(@PathVariable TRole role) {
+        Employee employee = employeeService.getEmployeeByPoste(role)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        return ResponseEntity.ok().body(employee);
+    }
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         Employee createdEmployee = employeeService.createEmployee(employee);
@@ -49,6 +61,7 @@ public class EmployeeController {
         Employee updatedEmployee = employeeService.updateEmployee(idEmployee, employeeDetails);
         return ResponseEntity.ok(updatedEmployee);
     }
+
 
     @DeleteMapping("/{idEmployee}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long idEmployee) {

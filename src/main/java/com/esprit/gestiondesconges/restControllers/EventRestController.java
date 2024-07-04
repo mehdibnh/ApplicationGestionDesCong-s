@@ -1,10 +1,12 @@
 package com.esprit.gestiondesconges.restControllers;
 
 import com.esprit.gestiondesconges.entities.Event;
+import com.esprit.gestiondesconges.entities.TypeEvent;
 import com.esprit.gestiondesconges.services.interfaces.IEventService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,5 +39,13 @@ public class EventRestController {
     @GetMapping("/liste")
     public List<Event> récupérerListeEvents() {
         return eventService.récupérerListeEvents();
+    }
+
+    @GetMapping("/search")
+    public List<Event> searchEvents(@RequestParam(required = false) String keyword,
+                                    @RequestParam(required = false) TypeEvent typeEvent,
+                                    @RequestParam(required = false) Date startDate,
+                                    @RequestParam(required = false) Date endDate) {
+        return eventService.searchEvents(keyword, typeEvent, startDate, endDate);
     }
 }

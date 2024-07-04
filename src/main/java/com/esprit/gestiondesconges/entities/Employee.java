@@ -23,6 +23,8 @@ public class Employee {
     private Date dateNaissance;
     private Date dateRecrutement;
     private  String salaire;
+    @Enumerated(EnumType.STRING)
+    private  TypeRole role;
     private String password;
     private int soldeConge;
 

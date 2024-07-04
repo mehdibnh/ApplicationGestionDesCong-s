@@ -1,6 +1,7 @@
 package com.esprit.gestiondesconges.services;
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.entities.Employee;
+import com.esprit.gestiondesconges.entities.TypeRole;
 import com.esprit.gestiondesconges.repositories.ICongeRepo;
 import com.esprit.gestiondesconges.repositories.IEmployerRepo;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,9 @@ public class CongeServices  implements ICongeServices {
         long idemployer = 1 ;
         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         conge.setEmployee(employee);
-        // ca
+        // par ca :   Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
+        //     if (e.isPresent()){
+        //         conge.setEmployee(e.get());}
         conge.setStatut(TypeStatut.enattente);
         java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -92,8 +96,21 @@ public class CongeServices  implements ICongeServices {
 
     @Override
     public List<Conge> recupererListeConge() {
-        return congeRepo.findAll();
+        // Change x par l'ID de l'employé qui est connecté
+       // Long x = getCurrentUserId();
+        long x = 1; // Vous devriez remplacer cette valeur par l'ID de l'employé connecté
+        Employee e = emplpoerRepo.findById(x).orElse(null);
+        if (e != null && e.getRole() == TypeRole.admin) {
+
+            return congeRepo.findAll();
+        }
+     else
+        return (List<Conge>) congeRepo.getAllByEmployee(e);
+
+
     }
+
+
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);

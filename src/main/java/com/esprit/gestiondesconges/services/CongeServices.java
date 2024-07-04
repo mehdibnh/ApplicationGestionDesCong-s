@@ -19,30 +19,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
-
 @AllArgsConstructor
 @Slf4j
 @Service
 public class CongeServices  implements ICongeServices {
     ICongeRepo congeRepo;
     IEmployerRepo emplpoerRepo ;
-    
 
     @Override
     public Conge ajouterConge(Conge conge) {
-       // sette la conge a la paremier employer il fauter change ca par la employer conncter
         long idemployer = 1 ;
         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         conge.setEmployee(employee);
-        // par ca :   Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
-        //     if (e.isPresent()){
-        //         conge.setEmployee(e.get());}
         conge.setStatut(TypeStatut.enattente);
         java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if (dateDebut.isBefore(LocalDate.now())) {
+            return null ;
+        }
         long totalDays = ChronoUnit.DAYS.between(dateDebut, dateFin) + 1; // inclure dateDebut et dateFin
         long weekendDays = 0;
         for (LocalDate date = dateDebut; !date.isAfter(dateFin); date = date.plusDays(1)) {
@@ -51,9 +47,11 @@ public class CongeServices  implements ICongeServices {
             }
         }
         long workingDays = totalDays - weekendDays;
-       //  workingDays = workingDays + 1 ;
-        conge.setNombreDeJours((int) workingDays);
-        return congeRepo.save(conge);
+        if (workingDays > 0) {
+            conge.setNombreDeJours((int) workingDays);
+            return congeRepo.save(conge);
+        }
+        return  null ;
     }
     @Override
     public Conge supprimerConge(Long idconge) {
@@ -72,7 +70,6 @@ public class CongeServices  implements ICongeServices {
         Conge conge1 = new Conge() ;
         conge1 = congeRepo.findById(idconge).orElse(null);
         if (conge1.getStatut()==TypeStatut.enattente) {
-
             if ((conge.getDateDebut()==null )||(conge.getDateFin()==null))
             {
                 conge1.setTypeConge(conge.getTypeConge());
@@ -82,47 +79,56 @@ public class CongeServices  implements ICongeServices {
                 System.out.println();
                 java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if (dateDebut.isBefore(LocalDate.now())) {
+                return null ;
+            }
                 long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
                 nombreDeJours = nombreDeJours + 1;
+            if (nombreDeJours > 0) {
+                conge.setNombreDeJours((int) nombreDeJours);
                 conge1.setNombreDeJours((int) nombreDeJours);
                 conge1.setIdConge(idconge);
                 conge1.setDateDebut(conge.getDateDebut());
                 conge1.setDateFin(conge.getDateFin());
                 congeRepo.save(conge1);
                 return conge1;
+            }
         }
-        return  conge1 ;
+        return  null ;
     }
-
     @Override
     public List<Conge> recupererListeConge() {
-        // Change x par l'ID de l'employé qui est connecté
        // Long x = getCurrentUserId();
-        long x = 1; // Vous devriez remplacer cette valeur par l'ID de l'employé connecté
+        long x = 1;
         Employee e = emplpoerRepo.findById(x).orElse(null);
         if (e != null && e.getRole() == TypeRole.admin) {
-
             return congeRepo.findAll();
         }
      else
         return (List<Conge>) congeRepo.getAllByEmployee(e);
-
-
+        }
+    @Override
+    public List<Conge> recupererListeCongeenvoyerparunemployer(Long idemployer) {
+        Employee e = emplpoerRepo.findById(idemployer).orElse(null);
+        if (e != null) {
+            return (List<Conge>) congeRepo.getAllByEmployee(e);
+        }
+        else
+            return  null ;
     }
+
+
+
 
 
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-            // applele fonction loggin
          int  soldedecongedeemployer = conge.getEmployee().getSoldeConge();
          int  nbjourconge = conge.getNombreDeJours() ;
          Long idemployer = conge.getEmployee().getIdEmployee();
          Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         if (conge != null && conge.getStatut()==TypeStatut.enattente && soldedecongedeemployer>=nbjourconge) {
-            System.out.println(conge.getEmployee().getEmail());
-            // apelle fonction envoyer mail
-            System.out.println("7777777777777777777777");
             conge.setStatut(TypeStatut.accepter);
             employee.setSoldeConge(soldedecongedeemployer-nbjourconge);
             emplpoerRepo.save(employee) ;
@@ -173,7 +179,6 @@ public class CongeServices  implements ICongeServices {
         Conge conge = congeRepo.findById(idconge).orElse(null);
         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         if (conge != null && employee != null) {
-        //    conge.setEmployee(employee);
             congeRepo.save(conge);
             return conge;
         } else {
@@ -181,7 +186,6 @@ public class CongeServices  implements ICongeServices {
         }
         return conge;
     }
-
     private void envoyerEmail(String destinataire, String sujet, String corps) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -194,21 +198,17 @@ public class CongeServices  implements ICongeServices {
             }
         });
         try {
-
-            // Création du message
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("")); // Remplacez par votre adresse e-mail
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinataire));
             message.setSubject(sujet);
             message.setText(corps);
-            // Envoi du message
             Transport.send(message);
             System.out.println("E-mail envoyé avec succès");
         } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
-
 }
 
 

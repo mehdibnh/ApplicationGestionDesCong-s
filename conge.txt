@@ -1,7 +1,2 @@
-trie les conge (commence par en attente )
-mail :
-spring.mail.username=kefi.maheresprit@gmail.com
-spring.mail.password=d<fhsdfhsdh11221
-
-spring.mail.username=regie.nationale.alcool@gmail.com
-spring.mail.password=czyxhwhrilgvqmnc
+1. Les congés en attente doivent s'afficher en premier
+2. L'utilisateur ne peut pas saisir une date négative ou une date antérieure

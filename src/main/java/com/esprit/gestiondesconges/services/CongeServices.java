@@ -5,6 +5,9 @@ import com.esprit.gestiondesconges.repositories.ICongeRepo;
 import com.esprit.gestiondesconges.repositories.IEmployerRepo;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
 import com.esprit.gestiondesconges.entities.TypeStatut ;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,7 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.time.temporal.ChronoUnit;
 import java.time.ZoneId;
+import java.util.Properties;
 import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Slf4j
 @Service
@@ -92,13 +97,16 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        // lazem if ()
+            // applele fonction loggin
          int  soldedecongedeemployer = conge.getEmployee().getSoldeConge();
          int  nbjourconge = conge.getNombreDeJours() ;
          Long idemployer = conge.getEmployee().getIdEmployee();
          Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         if (conge != null && conge.getStatut()==TypeStatut.enattente && soldedecongedeemployer>=nbjourconge) {
-         conge.setStatut(TypeStatut.accepter);
+            System.out.println(conge.getEmployee().getEmail());
+            // apelle fonction envoyer mail
+            System.out.println("7777777777777777777777");
+            conge.setStatut(TypeStatut.accepter);
             employee.setSoldeConge(soldedecongedeemployer-nbjourconge);
             emplpoerRepo.save(employee) ;
             congeRepo.save(conge);
@@ -113,14 +121,13 @@ public class CongeServices  implements ICongeServices {
             Long idemployer = conge.getEmployee().getIdEmployee();
             Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
             congeRepo.save(conge);
-
         }
         return conge;
     }
     @Override
-    @Scheduled(cron = "0 * * * * ?")
+ //   @Scheduled(cron = "0 * * * * ?")  debut de chaque menute
+    @Scheduled(cron = "0 0 0 * * ?")  // debut de chaque jour
     public List<Conge> annuler() {
-        System.out.println("maher");
         LocalDate dateSysteme = LocalDate.now();
         List<Conge> tousLesConges = congeRepo.findAll();
         List<Conge> congesAAnnuler = tousLesConges.stream()
@@ -130,7 +137,7 @@ public class CongeServices  implements ICongeServices {
                             dateDebutConge.getMonth() == dateSysteme.getMonth() &&
                             dateDebutConge.getDayOfMonth() == dateSysteme.getDayOfMonth();
                 })
-                .collect(Collectors.toList());
+        .collect(Collectors.toList());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         congesAAnnuler.forEach(conge -> {
             String dateDebutFormatee = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
@@ -156,6 +163,33 @@ public class CongeServices  implements ICongeServices {
             log.error("Conge or Employer not found");
         }
         return conge;
+    }
+
+    private void envoyerEmail(String destinataire, String sujet, String corps) {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("", ""); // Remplacez par vos identifiants de messagerie
+            }
+        });
+        try {
+
+            // Création du message
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("")); // Remplacez par votre adresse e-mail
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinataire));
+            message.setSubject(sujet);
+            message.setText(corps);
+            // Envoi du message
+            Transport.send(message);
+            System.out.println("E-mail envoyé avec succès");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
 }

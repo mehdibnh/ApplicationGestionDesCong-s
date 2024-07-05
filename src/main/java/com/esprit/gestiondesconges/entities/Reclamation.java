@@ -17,7 +17,7 @@ public class Reclamation {
     private Long idReclamation;
 
     private String titre;
-    //private Status status;
+    private Status status;
 
     @ManyToOne
     private Employee employee;

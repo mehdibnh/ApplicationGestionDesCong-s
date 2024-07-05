@@ -6,7 +6,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 
-@EnableScheduling
 @SpringBootApplication
 @EnableScheduling
 public class GestionDesCongesApplication {

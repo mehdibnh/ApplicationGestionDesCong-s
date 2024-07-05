@@ -1,5 +1,6 @@
 package com.esprit.gestiondesconges.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmployee;
 
-
+    @JsonIgnore
 @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
 private Set <Historique> historique;
     private String nom;

@@ -40,7 +40,5 @@ public class Conge {
     @ManyToOne
     private Employee employee;
 
-    public void setStatusConge(String status) {
-        this.status = status;
-    }
+
 }

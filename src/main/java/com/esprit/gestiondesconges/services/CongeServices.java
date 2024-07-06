@@ -55,7 +55,7 @@ public class CongeServices implements ICongeServices {
             conge.setNombreDeJours((int) workingDays);
             return congeRepo.save(conge);
         }
-        return null;
+        return congeRepo.save(conge);
     }
 
     @Override
@@ -103,13 +103,7 @@ public class CongeServices implements ICongeServices {
 
     @Override
     public List<Conge> recupererListeConge() {
-        long x = 1;
-        Employee e = emplpoerRepo.findById(x).orElse(null);
-        if (e != null && e.getRole() == TypeRole.admin) {
             return congeRepo.findAll();
-        } else {
-            return congeRepo.getAllByEmployee(e);
-        }
     }
 
     @Override

@@ -98,29 +98,8 @@ public class CongeServices  implements ICongeServices {
     }
     @Override
     public List<Conge> recupererListeConge() {
-       // Long x = getCurrentUserId();
-        long x = 1;
-        Employee e = emplpoerRepo.findById(x).orElse(null);
-        if (e != null && e.getRole() == TypeRole.admin) {
             return congeRepo.findAll();
         }
-     else
-        return (List<Conge>) congeRepo.getAllByEmployee(e);
-        }
-    @Override
-    public List<Conge> recupererListeCongeenvoyerparunemployer(Long idemployer) {
-        Employee e = emplpoerRepo.findById(idemployer).orElse(null);
-        if (e != null) {
-            return (List<Conge>) congeRepo.getAllByEmployee(e);
-        }
-        else
-            return  null ;
-    }
-
-
-
-
-
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
@@ -174,41 +153,8 @@ public class CongeServices  implements ICongeServices {
         return congesAAnnuler;
     }
 
-    @Override
-    public Conge effecteremployeraconge(Long idconge, Long idemployer) {
-        Conge conge = congeRepo.findById(idconge).orElse(null);
-        Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
-        if (conge != null && employee != null) {
-            congeRepo.save(conge);
-            return conge;
-        } else {
-            log.error("Conge or Employer not found");
-        }
-        return conge;
-    }
-    private void envoyerEmail(String destinataire, String sujet, String corps) {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        Session session = Session.getInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("", ""); // Remplacez par vos identifiants de messagerie
-            }
-        });
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("")); // Remplacez par votre adresse e-mail
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinataire));
-            message.setSubject(sujet);
-            message.setText(corps);
-            Transport.send(message);
-            System.out.println("E-mail envoyé avec succès");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
+
+
 }
 
 

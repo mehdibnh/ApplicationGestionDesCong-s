@@ -53,15 +53,5 @@ public class CongeController {
         return congeServices.annuler();
     }
 
-    @PostMapping(path = "/affecteremployer/{idconge}/{idemployer}")
-    public Conge affecterFoyerAuniversite(@PathVariable Long idconge, @PathVariable Long idemployer) {
-        {
-            return congeServices.effecteremployeraconge (idconge ,idemployer);
-        }
-    }
-    @GetMapping("/recupererListeCongeenvoyerparunemployer/{idemployer}")
-    public List<Conge> recupererListeCongeenvoyerparunemployer(@PathVariable("idemployer") Long idemployer)
-    {
-        return congeServices.recupererListeCongeenvoyerparunemployer(idemployer) ;
-    }
+
 }

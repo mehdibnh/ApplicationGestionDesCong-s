@@ -1,15 +1,19 @@
 package com.esprit.gestiondesconges.restControllers;
-
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
 import com.esprit.gestiondesconges.services.interfaces.IHistoriqueService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/conge")
@@ -59,7 +63,7 @@ public class CongeController {
         return congeServices.annuler();
     }
 
-    @PostMapping(path = "/affecteremployer/{idconge}/{idemployer}")
+    @PostMapping("/affecteremployer/{idconge}/{idemployer}")
     public Conge affecterFoyerAuniversite(@PathVariable Long idconge, @PathVariable Long idemployer) {
         return congeServices.effecteremployeraconge(idconge, idemployer);
     }

@@ -53,9 +53,10 @@ public class CongeServices implements ICongeServices {
         long workingDays = totalDays - weekendDays;
         if (workingDays > 0) {
             conge.setNombreDeJours((int) workingDays);
-            return congeRepo.save(conge);
         }
-        return congeRepo.save(conge);
+        Conge savedConge = congeRepo.save(conge);
+        System.out.println("Conge saved: " + savedConge);  // Ajoutez cette ligne pour journaliser la réponse
+        return savedConge;
     }
 
     @Override
@@ -103,7 +104,7 @@ public class CongeServices implements ICongeServices {
 
     @Override
     public List<Conge> recupererListeConge() {
-            return congeRepo.findAll();
+        return congeRepo.findAll();
     }
 
     @Override
@@ -173,5 +174,4 @@ public class CongeServices implements ICongeServices {
     public Conge effecteremployeraconge(Long idconge, Long idemployer) {
         return null;
     }
-
 }

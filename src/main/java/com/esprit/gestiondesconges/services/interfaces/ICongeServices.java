@@ -13,8 +13,6 @@ public interface ICongeServices {
     List<Conge> recupererListeConge();
     Conge accepterconge(Long idconge);
     Conge refuser(Long idconge);
-
-    @Scheduled(cron = "0 0 0 * * ?")
     List<Conge> annuler();
 
     Conge effecteremployeraconge(Long idconge, Long idemployer);

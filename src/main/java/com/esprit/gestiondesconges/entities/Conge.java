@@ -38,6 +38,7 @@ public class Conge {
     private Set<Historique> historiques;
 
     @ManyToOne
+    @JsonIgnore
     private Employee employee;
 
 

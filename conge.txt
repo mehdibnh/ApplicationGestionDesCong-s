@@ -1,0 +1,2 @@
+1. Les congés en attente doivent s'afficher en premier
+2. L'utilisateur ne peut pas saisir une date négative ou une date antérieure

@@ -15,18 +15,33 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Conge {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idConge;
+    private long idConge;
     private Date dateDebut;
     private Date dateFin;
     private int nombreDeJours;
-    private TypeConge typeConge;
-    private boolean certifié;
-
-    @ManyToMany
+    @Enumerated(EnumType.STRING)
+    private Status status ;
+    private String status;
+    @Enumerated(EnumType.STRING)
+    TypeStatut statut;
+    @Enumerated(EnumType.STRING)
+    TypeConge typeConge;
+    boolean certifie;
+    @JsonIgnore
+    @OneToMany
     private Set<Historique> historiques;
 
     @ManyToOne
+    @JsonIgnore
     private Employee employee;
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
+
+}
+

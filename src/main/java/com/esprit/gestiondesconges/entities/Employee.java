@@ -39,4 +39,8 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private Set<Reclamation> reclamations;
 
+    @OneToMany(mappedBy = "employee")
+    private Set<ArchivedReclamation> archivedReclamations;
+
+
 }

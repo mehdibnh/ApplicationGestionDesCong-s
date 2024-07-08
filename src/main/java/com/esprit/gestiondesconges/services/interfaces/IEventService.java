@@ -1,9 +1,11 @@
 package com.esprit.gestiondesconges.services.interfaces;
+
 import com.esprit.gestiondesconges.entities.Event;
 import com.esprit.gestiondesconges.entities.TypeEvent;
 
 import java.util.Date;
 import java.util.List;
+
 public interface IEventService {
     Event ajouterEvent(Event event);
     Event supprimerEvent(Long idEvent);

@@ -90,8 +90,8 @@ public class EmployeeService implements IemployeeService {
     public void ajouterCongesTousEmployes() {
         List<Employee> employees = employeeRepository.findAll();
         for (Employee employee : employees) {
-            double nouveauSolde = employee.getSoldeConges() + 1.8;
-            employee.setSoldeConges(nouveauSolde);
+            double nouveauSolde = employee.getSoldeConge() + 1.8;
+            employee.setSoldeConge((int) nouveauSolde);
 
             employeeRepository.save(employee);
         }

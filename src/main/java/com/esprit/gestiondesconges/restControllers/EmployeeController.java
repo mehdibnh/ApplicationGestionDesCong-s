@@ -1,7 +1,7 @@
 package com.esprit.gestiondesconges.restControllers;
 
 import com.esprit.gestiondesconges.entities.Employee;
-import com.esprit.gestiondesconges.entities.TRole;
+import com.esprit.gestiondesconges.entities.Role;
 import com.esprit.gestiondesconges.services.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +44,7 @@ public class EmployeeController {
         return ResponseEntity.ok().body(employee);
     }
 @GetMapping("/search/{role}")
-    public ResponseEntity<Employee> getEmployeeByPoste(@PathVariable TRole role) {
+    public ResponseEntity<Employee> getEmployeeByPoste(@PathVariable Role role) {
         Employee employee = employeeService.getEmployeeByPoste(role)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return ResponseEntity.ok().body(employee);

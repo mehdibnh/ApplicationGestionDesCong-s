@@ -6,7 +6,7 @@ import com.esprit.gestiondesconges.entities.Employee;
 import com.esprit.gestiondesconges.entities.TypeEvent;
 import com.esprit.gestiondesconges.repositories.IEventRepo;
 import com.esprit.gestiondesconges.services.interfaces.IEventService;
-import jakarta.mail.MessagingException;
+//import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class EventService implements IEventService {
     IEventRepo eventRepo;
-    EmailService emailService;
+    //EmailService emailService;
     EmployeeService employeeService;
 
     @Override

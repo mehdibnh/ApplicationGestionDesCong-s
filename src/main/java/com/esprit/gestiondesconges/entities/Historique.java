@@ -25,10 +25,10 @@ private Conge Conge;
     @JsonIgnore
     @ManyToOne
     private Employee employee;
-    @JsonIgnore
+
 
     @Enumerated(EnumType.STRING)
-    private StatusConge status;
+    private StatusConge statusconge;
 
     @Enumerated(EnumType.STRING)
     private EtatConge etatConge;
@@ -51,8 +51,13 @@ private Conge Conge;
     }
 
     public void setStatus(StatusConge status) {
-        this.status = status;
+        this.statusconge = status;
     }
+
+    public void setStatusConge(StatusConge status) {
+        this.statusconge = status;
+    }
+
 
     public String getUsername() {
         return employee.getNom();

@@ -1,5 +1,5 @@
 package com.esprit.gestiondesconges.entities;
 
-public enum TRole {
-    ADMIN, EMPLOYEE, MANAGER
+public enum Role{
+    ADMIN,Leader,Member
 }

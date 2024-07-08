@@ -1,6 +1,8 @@
 package com.esprit.gestiondesconges.services;
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.entities.Employee;
+import com.esprit.gestiondesconges.entities.Status;
+import com.esprit.gestiondesconges.entities.StatusConge;
 import com.esprit.gestiondesconges.repositories.EmployeeRepo;
 import com.esprit.gestiondesconges.repositories.IConge;
 import com.esprit.gestiondesconges.services.interfaces.ICongeServices;
@@ -24,7 +26,7 @@ public class CongeServices  implements ICongeServices {
     EmployeeRepo emplpoerRepo ;
     @Override
     public Conge ajouterConge(Conge conge) {
-        conge.setStatus("en attente");
+        conge.setStatus(Status.En_attente);
      Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
      if (e.isPresent()){
          conge.setEmployee(e.get());}
@@ -57,7 +59,7 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge modifierConge(Long idconge, Conge conge) {
         if (congeRepo.existsById(idconge)) {
-            conge.setStatus("En attente");
+            conge.setStatus(Status.En_attente);
             java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
@@ -74,8 +76,8 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && "En attente".equals(conge.getStatus())) {
-            conge.setStatus("Accepter");
+        if (conge != null && "En_attente".equals(conge.getStatus())) {
+            conge.setStatus(Status.accepter);
             // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
             congeRepo.save(conge);
 
@@ -85,8 +87,8 @@ public class CongeServices  implements ICongeServices {
     @Override
     public Conge refuser(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && "En attente".equals(conge.getStatus())) {
-            conge.setStatus("Refuse");
+        if (conge != null && "En_attente".equals(conge.getStatus())) {
+            conge.setStatus(Status.refuse);
             // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
             congeRepo.save(conge);
             System.out.println("Le congé avec ID " + idconge + " est en attente et sera accepté.");
@@ -110,9 +112,9 @@ public class CongeServices  implements ICongeServices {
         congesAAnnuler.forEach(conge -> {
             String dateDebutFormatee = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
             String dateFinFormatee = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
-            if ("En attente".equals(conge.getStatus()))
+            if ("En_attente".equals(conge.getStatus()))
             {
-                conge.setStatus("Annuler");
+                conge.setStatus(Status.annuler);
                 congeRepo.save(conge);
             }
         });

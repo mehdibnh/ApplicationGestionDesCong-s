@@ -28,7 +28,7 @@ private Set <Historique> historique;
     private String manager;
     private double soldeConges;
     @Enumerated(EnumType.STRING)
-    private TRole role;
+    private Role role;
 
 
 }

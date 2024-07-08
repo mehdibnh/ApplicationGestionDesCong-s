@@ -1,7 +1,7 @@
 package com.esprit.gestiondesconges.services.interfaces;
 
 import com.esprit.gestiondesconges.entities.Employee;
-import com.esprit.gestiondesconges.entities.TRole;
+import com.esprit.gestiondesconges.entities.Role;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,8 @@ public interface IemployeeService {
 
     Optional<Employee> getEmployeeByNameAndPrenom(String nom, String prenom);
 
-    Optional <Employee> getEmployeeByPoste(TRole role);
+    Optional <Employee> getEmployeeByPoste(Role role);
+
 
     void affecterHistoriqueAEmployee(long idHistorique, long idEmployee);
     public void ajouterCongesTousEmployes();

@@ -2,7 +2,8 @@ package com.esprit.gestiondesconges.services;
 
 import com.esprit.gestiondesconges.entities.Employee;
 import com.esprit.gestiondesconges.entities.Historique;
-import com.esprit.gestiondesconges.entities.TRole;
+import com.esprit.gestiondesconges.entities.Role;
+import com.esprit.gestiondesconges.entities.Role;
 import com.esprit.gestiondesconges.repositories.EmployeeRepo;
 import com.esprit.gestiondesconges.repositories.HistoriqueRepo;
 import com.esprit.gestiondesconges.services.interfaces.IemployeeService;
@@ -72,7 +73,7 @@ public class EmployeeService implements IemployeeService {
         return employeeRepository.findByNomAndPrenom(nom, prenom);
     }
     @Override
-    public Optional <Employee> getEmployeeByPoste(TRole role) {
+    public Optional <Employee> getEmployeeByPoste(Role role) {
         return employeeRepository.findEmployeeByRole(role);
     }
     @Override

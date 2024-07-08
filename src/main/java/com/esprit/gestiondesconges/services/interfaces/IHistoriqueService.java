@@ -11,7 +11,7 @@ public interface IHistoriqueService {
     List<Historique> getHistoriqueByUsername(String username);
     List<Historique> getHistoriqueByAction(EtatConge action);
     Historique createHistoriqueEntry(Conge conge );
-    Historique editHistoriqueEntryById(Long idHistorique);
+    public Historique editHistoriqueEntryById(long idConge, Conge newCongeData);
 
-    long deletehistorique(long idConge);
+    void deletehistorique(long idConge);
 }

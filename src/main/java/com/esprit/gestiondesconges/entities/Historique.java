@@ -26,14 +26,10 @@ public class Historique {
 
     @JsonIgnore
     @ManyToOne
-    private Conge conge;
-
-    @JsonIgnore
-    @ManyToOne
     private Employee employee;
-
+    private Conge conge;
     @Enumerated(EnumType.STRING)
-    private StatusConge status;
+    private StatusConge statusconge;
 
     @Enumerated(EnumType.STRING)
     private EtatConge etatConge;
@@ -56,8 +52,13 @@ public class Historique {
     }
 
     public void setStatus(StatusConge status) {
-        this.status = status;
+        this.statusconge = status;
     }
+
+    public void setStatusConge(StatusConge status) {
+        this.statusconge = status;
+    }
+
 
     public String getUsername() {
         return employee.getNom();

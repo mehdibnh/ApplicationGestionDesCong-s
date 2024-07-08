@@ -2,6 +2,10 @@ package com.esprit.gestiondesconges.services;
 
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.entities.Employee;
+import com.esprit.gestiondesconges.entities.Status;
+import com.esprit.gestiondesconges.entities.StatusConge;
+import com.esprit.gestiondesconges.repositories.EmployeeRepo;
+import com.esprit.gestiondesconges.repositories.IConge;
 import com.esprit.gestiondesconges.entities.TypeRole;
 import com.esprit.gestiondesconges.entities.TypeStatut;
 import com.esprit.gestiondesconges.repositories.ICongeRepo;
@@ -34,6 +38,10 @@ public class CongeServices implements ICongeServices {
 
     @Override
     public Conge ajouterConge(Conge conge) {
+        conge.setStatus(Status.En_attente);
+     Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
+     if (e.isPresent()){
+         conge.setEmployee(e.get());}
         long idemployer = 1;
         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         conge.setEmployee(employee);
@@ -75,6 +83,14 @@ public class CongeServices implements ICongeServices {
 
     @Override
     public Conge modifierConge(Long idconge, Conge conge) {
+        if (congeRepo.existsById(idconge)) {
+            conge.setStatus(Status.En_attente);
+            java.time.LocalDate dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            java.time.LocalDate dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
+            conge.setNombreDeJours((int) nombreDeJours);
+            conge.setIdConge(idconge);
+            return congeRepo.save(conge);
         Conge conge1 = congeRepo.findById(idconge).orElse(null);
         if (conge1 != null && conge1.getStatut() == TypeStatut.enattente) {
             if (conge.getDateDebut() == null || conge.getDateFin() == null) {
@@ -120,6 +136,9 @@ public class CongeServices implements ICongeServices {
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
+        if (conge != null && "En_attente".equals(conge.getStatus())) {
+            conge.setStatus(Status.accepter);
+            // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
         int soldedecongedeemployer = conge.getEmployee().getSoldeConge();
         int nbjourconge = conge.getNombreDeJours();
         Long idemployer = conge.getEmployee().getIdEmployee();
@@ -136,6 +155,9 @@ public class CongeServices implements ICongeServices {
     @Override
     public Conge refuser(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
+        if (conge != null && "En_attente".equals(conge.getStatus())) {
+            conge.setStatus(Status.refuse);
+            // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
         if (conge != null) {
             conge.setStatut(TypeStatut.refuser);
             Long idemployer = conge.getEmployee().getIdEmployee();
@@ -162,6 +184,9 @@ public class CongeServices implements ICongeServices {
         congesAAnnuler.forEach(conge -> {
             String dateDebutFormatee = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
             String dateFinFormatee = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
+            if ("En_attente".equals(conge.getStatus()))
+            {
+                conge.setStatus(Status.annuler);
             if (conge.getStatut() == TypeStatut.enattente) {
                 conge.setStatut(TypeStatut.annuler);
                 congeRepo.save(conge);

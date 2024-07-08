@@ -1,5 +1,6 @@
 package com.esprit.gestiondesconges.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmployee;
+
     private String nom;
     private String prenom;
     private String email;
@@ -25,7 +27,7 @@ public class Employee {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private TypeRole role;
+    private Role role;
 
     private int soldeConge;
 
@@ -40,7 +42,7 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee")
     private Set<Reclamation> reclamations;
-
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
     private Set<Historique> historique;
 

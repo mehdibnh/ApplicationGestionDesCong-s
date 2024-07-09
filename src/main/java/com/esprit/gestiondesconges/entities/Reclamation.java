@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -17,8 +19,19 @@ public class Reclamation {
     private Long idReclamation;
 
     private String titre;
-    //private Status status;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne
     private Employee employee;
+
+    private String categorie;
+
+    private LocalDateTime dateCreation;
+
+    private String description;
+
+    @OneToOne(mappedBy = "reclamation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ArchivedReclamation archivedReclamation;
 }

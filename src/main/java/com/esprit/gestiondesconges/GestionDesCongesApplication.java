@@ -11,5 +11,4 @@ public class GestionDesCongesApplication {
     public static void main(String[] args) {
         SpringApplication.run(GestionDesCongesApplication.class, args);
     }
-
 }

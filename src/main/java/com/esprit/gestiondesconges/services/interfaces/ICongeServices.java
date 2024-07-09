@@ -1,6 +1,8 @@
 package com.esprit.gestiondesconges.services.interfaces;
 
 import com.esprit.gestiondesconges.entities.Conge;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import java.util.List;
 
 public interface ICongeServices {
@@ -13,4 +15,6 @@ public interface ICongeServices {
     Conge refuser(Long idconge);
     List<Conge> annuler();
 
+    Conge effecteremployeraconge(Long idconge, Long idemployer);
+    List<Conge> recupererListeCongeenvoyerparunemployer(Long idemployer);
 }

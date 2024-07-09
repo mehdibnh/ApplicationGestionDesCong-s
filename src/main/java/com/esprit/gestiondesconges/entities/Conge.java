@@ -1,6 +1,5 @@
 package com.esprit.gestiondesconges.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,17 +20,28 @@ public class Conge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idConge;
     private Date dateDebut;
-    private   Date dateFin;
+    private Date dateFin;
     private int nombreDeJours;
     @Enumerated(EnumType.STRING)
-    TypeStatut statut ;
+    private Status status ;
+    private String status;
     @Enumerated(EnumType.STRING)
-     TypeConge typeConge;
-     boolean certifie;
+    TypeStatut statut;
+    @Enumerated(EnumType.STRING)
+    TypeConge typeConge;
+    boolean certifie;
     @JsonIgnore
     @OneToMany
     private Set<Historique> historiques;
-    @JsonIgnore
+
     @ManyToOne
+    @JsonIgnore
     private Employee employee;
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
+
+}
+

@@ -106,7 +106,7 @@ public class HistoriqueService implements IHistoriqueService {
         historiqueRepository.save(existingHistorique);
 
         return existingHistorique;
-    @Override
+    }
     public Historique editHistoriqueEntryById(Long idHistorique) {
         // Logique pour éditer une entrée de l'historique par ID (à implémenter)
         return null;
@@ -128,11 +128,5 @@ public class HistoriqueService implements IHistoriqueService {
 
         // Supprimer le congé de la table 'co' après l'enregistrement dans l'historique
         iConge.deleteById(idConge);
-    public long deletehistorique(long idConge) {
-        long optionalConge = Long.parseLong(null);  // il faut corrige
-        // Mettre à jour la date de modification
-        // Sauvegarder les modifications dans la base de données
-        // Créer et retourner un objet Historique pour cette action
-        return optionalConge;
     }
 }

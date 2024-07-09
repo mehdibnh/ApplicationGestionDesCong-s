@@ -27,7 +27,10 @@ public class Historique {
     @JsonIgnore
     @ManyToOne
     private Employee employee;
+
+    @ManyToOne
     private Conge conge;
+
     @Enumerated(EnumType.STRING)
     private StatusConge statusconge;
 

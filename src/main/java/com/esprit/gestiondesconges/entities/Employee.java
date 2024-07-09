@@ -42,6 +42,9 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee")
     private Set<Reclamation> reclamations;
+    @OneToMany(mappedBy = "employee")
+    private Set<ArchivedReclamation> archivedReclamations;
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
     private Set<Historique> historique;

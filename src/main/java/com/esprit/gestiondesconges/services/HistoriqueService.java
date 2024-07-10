@@ -65,8 +65,11 @@ public class HistoriqueService implements IHistoriqueService {
             throw new RuntimeException("Historique not found for Conge ID: " + idConge);
         }
 
-        Historique existingHistorique = historiqueList.stream().findFirst().get();
-        Conge existingConge = existingHistorique.getConge();
+        //Historique existingHistorique = historiqueList.stream().findFirst().get();
+        Historique existingHistorique = new Historique();
+       // Conge existingConge = existingHistorique.getConge();
+        Conge existingConge = iConge.findById(idConge)
+                .orElseThrow(() -> new RuntimeException("Congé not found with ID: " + idConge));
         boolean isModified = false;
 
         // Check and update dateDebut
@@ -101,7 +104,23 @@ public class HistoriqueService implements IHistoriqueService {
 
         // Update statusConge if any change detected
         if (isModified) {
-            existingHistorique.setStatusConge(StatusConge.modifer); // Assuming StatusConge is an Enum
+            existingHistorique.setStatusConge(StatusConge.modifer);// Assuming StatusConge is an Enum
+            existingHistorique.setConge(existingConge);//
+            existingHistorique.setActionTimestamp(LocalDateTime.now());
+            existingHistorique.setEmployee(existingConge.getEmployee());
+            EtatConge etatConge ;
+            switch (newCongeData.getStatus()) {
+                case En_attente:
+                    etatConge= EtatConge.EnAttente;
+                case accepter:
+                    etatConge= EtatConge.Accepte;
+                case refuse:
+                    etatConge= EtatConge.Refuse;
+                // Add other mappings as necessary
+                default:
+                    etatConge= EtatConge.EnAttente; // Default mapping
+            }
+            existingHistorique.setAction(etatConge);
         }
 
         // Save the updated Conge

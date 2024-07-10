@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class CongeServices  implements ICongeServices {
     IConge congeRepo;
     EmployeeRepo emplpoerRepo ;
+    HistoriqueService historiqueService;
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatus(Status.En_attente);
@@ -49,6 +50,7 @@ public class CongeServices  implements ICongeServices {
         Conge conge = recupererConge(idconge);
         if (conge != null) {
             congeRepo.delete(conge);
+         //   historiqueService.deletehistorique(idconge);
         }
         return conge;
     }
@@ -65,6 +67,7 @@ public class CongeServices  implements ICongeServices {
             long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
             conge.setNombreDeJours((int) nombreDeJours);
             conge.setIdConge(idconge);
+            historiqueService.editHistoriqueEntryById(idconge, conge);
             return congeRepo.save(conge);
         }
         return null;

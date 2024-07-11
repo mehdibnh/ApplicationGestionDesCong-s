@@ -167,6 +167,7 @@ public class CongeServices  implements ICongeServices {
             String dateFinFormatee = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
             if (conge.getStatut() == TypeStatut.enattente) {
                 conge.setStatus(Status.annuler);
+                conge.setStatut(TypeStatut.annuler);
                 congeRepo.save(conge);
             }
         });

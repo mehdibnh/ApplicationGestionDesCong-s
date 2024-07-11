@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -44,8 +45,9 @@ public class AuthenticationController {
     service.activateAccount(token);
   }
 
-  @GetMapping("/change-pass-mail")
-  public void sendChangepassword(@RequestBody User user) throws MessagingException {
-     service.sendChangePasswEmail(user);
+  @PostMapping("/change-pass-mail")
+  public ResponseEntity<String> sendChangePassword(@RequestParam("email") String email) throws MessagingException {
+    service.sendChangePasswEmail(email);
+    return ResponseEntity.ok(email);
   }
 }

@@ -63,4 +63,41 @@ public class EmailService {
 
         mailSender.send(mimeMessage);
     }
+
+    @Async
+    public void sendEmailPersonalized(
+            String to,
+            EmailTemplateName emailTemplate,
+            String subject
+    ) throws MessagingException {
+        String templateName;
+        if (emailTemplate == null) {
+            templateName = "change_password";
+        } else {
+            templateName = emailTemplate.name();
+        }
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(
+                mimeMessage,
+                MULTIPART_MODE_MIXED,
+                UTF_8.name()
+        );
+        Map<String, Object> properties = new HashMap<>();
+        //properties.put("email", email);
+
+
+
+        Context context = new Context();
+        context.setVariables(properties);
+
+        helper.setFrom("regie.nationale.alcool@gmail.com");
+        helper.setTo(to);
+        helper.setSubject(subject);
+
+        String template = templateEngine.process(templateName, context);
+
+        helper.setText(template, true);
+
+        mailSender.send(mimeMessage);
+    }
 }

@@ -1,5 +1,6 @@
 package com.esprit.gestiondesconges.user;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,11 +18,11 @@ public class UserController {
     private final UserService service;
 
     @PatchMapping("change-password")
-    public ResponseEntity<?> changePassword(
-          @RequestBody ChangePasswordRequest request,
-          Principal connectedUser
+    public ResponseEntity<?> changePassword(@PathParam("email") String email,
+          @RequestBody ChangePasswordRequest request
+
     ) {
-        service.changePassword(request, connectedUser);
+        service.changePassword(email, request);
         return ResponseEntity.ok().build();
     }
 }

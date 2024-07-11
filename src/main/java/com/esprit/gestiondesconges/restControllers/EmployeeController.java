@@ -80,5 +80,37 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Historique ou employé non trouvé.");
         }
     }
+
+    @GetMapping("/{role}")
+    public List<Employee> getEmployesByRole(@PathVariable Role role) {
+        return employeeService.findByRole(role);
+    }
+    @GetMapping("/without-team")
+    public List<Employee> getEmployeesWithoutTeam() {
+        return employeeService.getEmployeesWithoutTeam();
+    }
+
+    @GetMapping("/without-team/role/Manager")
+    public ResponseEntity<List<Employee>> getManagersWithoutTeam() {
+        List<Employee> employees = employeeService.getManagersWithoutTeam();
+        return ResponseEntity.ok(employees);
+    }
+
+    @GetMapping("/without-team/role/Member")
+    public ResponseEntity<List<Employee>> getMembersWithoutTeam() {
+        List<Employee> employees = employeeService.getMembersWithoutTeam();
+        return ResponseEntity.ok(employees);
+    }
+
+
+    @DeleteMapping("/desaffecter-par-equipe/{idEquipe}")
+    public ResponseEntity<String> desaffecterEmployeesByEquipeId(@PathVariable Long idEquipe) {
+        try {
+            employeeService.desaffecterEmployeesByEquipeId(idEquipe);
+            return ResponseEntity.ok("Tous les employés de l'équipe ont été désaffectés avec succès.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Une erreur s'est produite lors de la désaffectation des employés.");
+        }
+    }
 }
 

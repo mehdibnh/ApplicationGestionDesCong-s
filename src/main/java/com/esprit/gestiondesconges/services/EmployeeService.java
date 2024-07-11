@@ -7,6 +7,7 @@ import com.esprit.gestiondesconges.entities.Role;
 import com.esprit.gestiondesconges.repositories.EmployeeRepo;
 import com.esprit.gestiondesconges.repositories.HistoriqueRepo;
 import com.esprit.gestiondesconges.services.interfaces.IemployeeService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -95,5 +96,26 @@ public class EmployeeService implements IemployeeService {
 
             employeeRepository.save(employee);
         }
+    }
+
+    public List<Employee> findByRole(Role role) {
+        return employeeRepository.findByRole(role);
+    }
+
+    public List<Employee> getEmployeesWithoutTeam() {
+        return employeeRepository.findAllByEquipeIsNull();
+    }
+
+    public List<Employee> getManagersWithoutTeam() {
+        return employeeRepository.findAllByEquipeIsNullAndRole(Role.Leader);
+    }
+
+    public List<Employee> getMembersWithoutTeam() {
+        return employeeRepository.findAllByEquipeIsNullAndRole(Role.Member);
+    }
+
+    @Transactional
+    public void desaffecterEmployeesByEquipeId(Long idEquipe) {
+        employeeRepository.desaffecterEmployeesByEquipeId(idEquipe);
     }
 }

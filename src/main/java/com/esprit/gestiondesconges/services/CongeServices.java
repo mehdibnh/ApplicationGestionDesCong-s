@@ -38,9 +38,8 @@ public class CongeServices implements ICongeServices {
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatus(Status.En_attente);
-     Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
-     if (e.isPresent()){
-         conge.setEmployee(e.get());}
+   //  Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
+   //  if (e.isPresent()){conge.setEmployee(e.get());}
         long idemployer = 1;
         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         conge.setEmployee(employee);
@@ -136,7 +135,7 @@ public class CongeServices implements ICongeServices {
     @Override
     public Conge accepterconge(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && "En_attente".equals(conge.getStatus())) {
+        if (conge != null) {
             conge.setStatus(Status.accepter);
             // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
             int soldedecongedeemployer = conge.getEmployee().getSoldeConge();
@@ -156,16 +155,17 @@ public class CongeServices implements ICongeServices {
     @Override
     public Conge refuser(Long idconge) {
         Conge conge = congeRepo.findById(idconge).orElse(null);
-        if (conge != null && "En_attente".equals(conge.getStatus())) {
-            conge.setStatus(Status.refuse);
+
+
             // ici, effectuer la soustraction du nombre de jours disponibles de l'employé.
             if (conge != null) {
+                conge.setStatus(Status.refuse);
                 conge.setStatut(TypeStatut.refuser);
                 Long idemployer = conge.getEmployee().getIdEmployee();
                 Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
                 congeRepo.save(conge);
             }
-        }
+
         return conge;
     }
 
@@ -186,12 +186,9 @@ public class CongeServices implements ICongeServices {
         congesAAnnuler.forEach(conge -> {
             String dateDebutFormatee = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
             String dateFinFormatee = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(formatter);
-            if ("En_attente".equals(conge.getStatus())) {
+            if (conge.getStatut() == TypeStatut.enattente) {
                 conge.setStatus(Status.annuler);
-                if (conge.getStatut() == TypeStatut.enattente) {
-                    conge.setStatut(TypeStatut.annuler);
                     congeRepo.save(conge);
-                }
             }
         });
         return congesAAnnuler;

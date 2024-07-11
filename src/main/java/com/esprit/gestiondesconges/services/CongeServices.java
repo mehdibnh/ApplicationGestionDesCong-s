@@ -33,15 +33,15 @@ import java.util.stream.Collectors;
 @Service
 
 public class CongeServices  implements ICongeServices {
-    IConge congeRepo;
+    ICongeRepo congeRepo;
     EmployeeRepo emplpoerRepo ;
     HistoriqueService historiqueService;
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatus(Status.En_attente);
-     Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
-     if (e.isPresent()){
-         conge.setEmployee(e.get());}
+     //Optional <Employee> e=   emplpoerRepo.findById(conge.getEmployee().getIdEmployee());
+//     if (e.isPresent()){
+//         conge.setEmployee(e.get());}
         long idemployer = 1;
         Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
         conge.setEmployee(employee);

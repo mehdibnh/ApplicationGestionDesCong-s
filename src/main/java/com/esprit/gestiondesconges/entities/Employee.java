@@ -3,6 +3,7 @@ package com.esprit.gestiondesconges.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.Date;
 import java.util.Set;
@@ -30,7 +31,10 @@ public class Employee {
 
     private int soldeConge;
 
+
     @ManyToOne
+    @JoinColumn(name = "equipe_id")
+    @JsonBackReference
     private Equipe equipe;
 
     @ManyToOne

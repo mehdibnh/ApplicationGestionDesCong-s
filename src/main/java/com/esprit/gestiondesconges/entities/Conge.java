@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -15,26 +16,31 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Conge {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idConge;
     private Date dateDebut;
-    private   Date dateFin;
+    private Date dateFin;
     private int nombreDeJours;
     @Enumerated(EnumType.STRING)
     private Status status ;
+    //private String status;
     @Enumerated(EnumType.STRING)
-    Typeconge typeConge;
-    @Column(columnDefinition = "boolean default false")
-    private boolean certifié ;
+    TypeStatut statut;
+    @Enumerated(EnumType.STRING)
+    TypeConge typeConge;
+    boolean certifie;
+    @JsonIgnore
     @OneToMany
     private Set<Historique> historiques;
 
     @ManyToOne
+    @JsonIgnore
     private Employee employee;
 
     public void setStatus(Status status) {
         this.status = status;
     }
-}
 
+}

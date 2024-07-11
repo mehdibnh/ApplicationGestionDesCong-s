@@ -1,8 +1,6 @@
 package com.esprit.gestiondesconges.services;
 
-import com.esprit.gestiondesconges.entities.Employee;
-import com.esprit.gestiondesconges.entities.Historique;
-import com.esprit.gestiondesconges.entities.Role;
+import com.esprit.gestiondesconges.entities.*;
 import com.esprit.gestiondesconges.entities.Role;
 import com.esprit.gestiondesconges.repositories.EmployeeRepo;
 import com.esprit.gestiondesconges.repositories.HistoriqueRepo;
@@ -11,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,8 @@ public class EmployeeService implements IemployeeService {
 
     private final EmployeeRepo employeeRepository;
     private final HistoriqueRepo historiqueRepo;
-
+    private final PasswordEncoder passwordEncoder;
+    private final EmployeeRepo repository;
     @Override
     public Employee createEmployee(Employee employee) {
         return employeeRepository.save(employee);
@@ -107,15 +107,38 @@ public class EmployeeService implements IemployeeService {
     }
 
     public List<Employee> getManagersWithoutTeam() {
-        return employeeRepository.findAllByEquipeIsNullAndRole(Role.Leader);
+        return employeeRepository.findAllByEquipeIsNullAndRole(Type.Leader);
     }
 
     public List<Employee> getMembersWithoutTeam() {
-        return employeeRepository.findAllByEquipeIsNullAndRole(Role.Member);
+        return employeeRepository.findAllByEquipeIsNullAndRole(Type.Member);
     }
 
     @Transactional
     public void desaffecterEmployeesByEquipeId(Long idEquipe) {
         employeeRepository.desaffecterEmployeesByEquipeId(idEquipe);
+    }
+
+
+
+    public void changePassword(String email , ChangePasswordRequest request) {
+
+        // Retrieve user from repository
+        Employee employee = repository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        // check if the current password is correct
+        if (!passwordEncoder.matches(request.getCurrentPassword(), employee.getPassword())) {
+            throw new IllegalStateException("Wrong password");
+        }
+        // check if the two new passwords are the same
+        if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
+            throw new IllegalStateException("Password are not the same");
+        }
+
+        // update the password
+        employee.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        // Save the updated user
+        repository.save(employee);
     }
 }

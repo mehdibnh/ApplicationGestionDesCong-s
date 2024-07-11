@@ -1,4 +1,4 @@
-package com.esprit.gestiondesconges.config;
+/*package com.esprit.gestiondesconges.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -19,3 +19,4 @@ public class CrossConfig implements WebMvcConfigurer {
                 .maxAge(3600);
     }
 }
+*/

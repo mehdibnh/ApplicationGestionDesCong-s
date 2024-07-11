@@ -1,8 +1,10 @@
 package com.esprit.gestiondesconges.restControllers;
 
+import com.esprit.gestiondesconges.entities.ChangePasswordRequest;
 import com.esprit.gestiondesconges.entities.Employee;
 import com.esprit.gestiondesconges.entities.Role;
 import com.esprit.gestiondesconges.services.EmployeeService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
@@ -48,6 +50,7 @@ public class EmployeeController {
         Employee employee = employeeService.getEmployeeByPoste(role)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         return ResponseEntity.ok().body(employee);
+
     }
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
@@ -111,6 +114,17 @@ public class EmployeeController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Une erreur s'est produite lors de la désaffectation des employés.");
         }
+    }
+
+
+
+    @PatchMapping("change-password")
+    public ResponseEntity<?> changePassword(@PathParam("email") String email,
+                                            @RequestBody ChangePasswordRequest request
+
+    ) {
+        employeeService.changePassword(email, request);
+        return ResponseEntity.ok().build();
     }
 }
 

@@ -1,8 +1,7 @@
 package com.esprit.gestiondesconges.services;
-import com.esprit.gestiondesconges.EmailService;
+import com.esprit.gestiondesconges.auth.EmailService;
 import com.esprit.gestiondesconges.entities.Employee;
 import com.esprit.gestiondesconges.entities.Equipe;
-import com.esprit.gestiondesconges.entities.Role;
 import com.esprit.gestiondesconges.repositories.IEmployerRepo;
 import com.esprit.gestiondesconges.repositories.IEquipe;
 import com.esprit.gestiondesconges.services.interfaces.IEquipeServices;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

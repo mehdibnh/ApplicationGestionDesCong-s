@@ -17,7 +17,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmployee;
 
-    @JsonIgnore
+   // @JsonIgnore
 @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
 private Set <Historique> historique;
     private String nom;

@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.Date;
 import java.util.Set;
-
 
 @Entity
 @Getter
@@ -26,7 +24,8 @@ public class Conge {
     private Status status ;
     @Enumerated(EnumType.STRING)
     Typeconge typeConge;
-    boolean certifié;
+    @Column(columnDefinition = "boolean default false")
+    private boolean certifié ;
     @OneToMany
     private Set<Historique> historiques;
 

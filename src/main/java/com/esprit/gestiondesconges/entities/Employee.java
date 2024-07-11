@@ -3,6 +3,7 @@ package com.esprit.gestiondesconges.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.util.Date;
 import java.util.Set;
@@ -17,7 +18,6 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmployee;
-
     private String nom;
     private String prenom;
     private String email;
@@ -31,7 +31,10 @@ public class Employee {
 
     private int soldeConge;
 
+
     @ManyToOne
+    @JoinColumn(name = "equipe_id")
+    @JsonBackReference
     private Equipe equipe;
 
     @ManyToOne
@@ -45,7 +48,6 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private Set<ArchivedReclamation> archivedReclamations;
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
     private Set<Historique> historique;
 

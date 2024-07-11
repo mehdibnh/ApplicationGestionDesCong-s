@@ -1,5 +1,6 @@
 package com.esprit.gestiondesconges.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,5 @@ public class Conge {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-
 }
+

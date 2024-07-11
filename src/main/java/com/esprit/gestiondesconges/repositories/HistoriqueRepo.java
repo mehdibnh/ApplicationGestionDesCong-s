@@ -24,7 +24,7 @@ import java.util.Optional;
     @Query("SELECT h FROM Historique h WHERE h.idHistorique = :id")
     Optional<Historique> findHistoriqueById(@Param("id") Long id);
 
-    @Query("SELECT h FROM Historique h WHERE h.Conge.idConge = :idConge order by h.timestamp desc")
+    @Query("SELECT h FROM Historique h WHERE h.conge.idConge = :idConge order by h.timestamp desc")
     List<Historique> findByCongeId(@Param("idConge") Long idConge);
 
 }

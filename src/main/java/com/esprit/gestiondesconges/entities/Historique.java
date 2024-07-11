@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -18,14 +19,17 @@ public class Historique {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idHistorique;
-@JsonIgnore
-@ManyToOne
-private Conge Conge;
+
+    private Date dateModification;
+    private TypeOperations typeOperations;
+    private String description;
 
     @JsonIgnore
     @ManyToOne
     private Employee employee;
 
+    @ManyToOne
+    private Conge conge;
 
     @Enumerated(EnumType.STRING)
     private StatusConge statusconge;
@@ -63,8 +67,7 @@ private Conge Conge;
         return employee.getNom();
     }
 
-    public void setConge(com.esprit.gestiondesconges.entities.Conge conge) {
-        Conge = conge;
+    public void setConge(Conge conge) {
+        this.conge = conge;
     }
 }
-

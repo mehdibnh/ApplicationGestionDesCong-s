@@ -5,7 +5,7 @@ import com.esprit.gestiondesconges.entities.EtatConge;
 import com.esprit.gestiondesconges.entities.Historique;
 import com.esprit.gestiondesconges.entities.StatusConge;
 import com.esprit.gestiondesconges.repositories.HistoriqueRepo;
-import com.esprit.gestiondesconges.repositories.IConge;
+import com.esprit.gestiondesconges.repositories.ICongeRepo;
 import com.esprit.gestiondesconges.services.interfaces.IHistoriqueService;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,9 @@ import java.util.List;
 public class HistoriqueService implements IHistoriqueService {
 
     private final HistoriqueRepo historiqueRepository;
-    private final IConge iConge;
+    private final ICongeRepo iConge;
 
-    public HistoriqueService(HistoriqueRepo historiqueRepository, IConge iConge) {
+    public HistoriqueService(HistoriqueRepo historiqueRepository, ICongeRepo iConge) {
         this.historiqueRepository = historiqueRepository;
         this.iConge = iConge;
     }
@@ -38,23 +38,19 @@ public class HistoriqueService implements IHistoriqueService {
         return historiqueRepository.findByEtatConge(action);
     }
 
-
     @Override
     public Historique createHistoriqueEntry(Conge conge) {
         Historique historique = new Historique();
         historique.setConge(conge);
         historique.setAction(EtatConge.EnAttente);
         historique.setActionTimestamp(LocalDateTime.now());
-       // historique.setUsername(UserContexte.getUsername());
-        //historique.setUsername(conge.getEmployee().getNom());
+        // historique.setUsername(UserContexte.getUsername());
+        // historique.setUsername(conge.getEmployee().getNom());
         historique.setEmployee(conge.getEmployee());
         historique.setStatus(StatusConge.cree);
 
         return historiqueRepository.save(historique);
     }
-
-
-
 
     @Override
     public Historique editHistoriqueEntryById(long idConge, Conge newCongeData) {
@@ -130,6 +126,10 @@ public class HistoriqueService implements IHistoriqueService {
 
         return existingHistorique;
     }
+    public Historique editHistoriqueEntryById(Long idHistorique) {
+        // Logique pour éditer une entrée de l'historique par ID (à implémenter)
+        return null;
+    }
     @Override
     public void deletehistorique(long idConge) {
         // Récupérer le congé à supprimer
@@ -149,4 +149,3 @@ public class HistoriqueService implements IHistoriqueService {
         iConge.deleteById(idConge);
     }
 }
-

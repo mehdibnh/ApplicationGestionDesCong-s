@@ -17,7 +17,6 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEmployee;
-
     private String nom;
     private String prenom;
     private String email;
@@ -45,7 +44,6 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private Set<ArchivedReclamation> archivedReclamations;
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "employee")
     private Set<Historique> historique;
 

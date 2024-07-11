@@ -31,10 +31,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 @Service
-public class CongeServices implements ICongeServices {
-    ICongeRepo congeRepo;
-    IEmployerRepo emplpoerRepo;
 
+public class CongeServices  implements ICongeServices {
+    IConge congeRepo;
+    EmployeeRepo emplpoerRepo ;
+    HistoriqueService historiqueService;
     @Override
     public Conge ajouterConge(Conge conge) {
         conge.setStatus(Status.En_attente);
@@ -71,6 +72,7 @@ public class CongeServices implements ICongeServices {
         Conge conge = recupererConge(idconge);
         if (conge != null) {
             congeRepo.delete(conge);
+         //   historiqueService.deletehistorique(idconge);
         }
         return conge;
     }
@@ -89,31 +91,8 @@ public class CongeServices implements ICongeServices {
             long nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin);
             conge.setNombreDeJours((int) nombreDeJours);
             conge.setIdConge(idconge);
-            congeRepo.save(conge);
-            Conge conge1 = congeRepo.findById(idconge).orElse(null);
-            if (conge1 != null && conge1.getStatut() == TypeStatut.enattente) {
-                if (conge.getDateDebut() == null || conge.getDateFin() == null) {
-                    conge1.setTypeConge(conge.getTypeConge());
-                    congeRepo.save(conge1);
-                    return conge1;
-                } else {
-                    dateDebut = conge.getDateDebut().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    dateFin = conge.getDateFin().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    if (dateDebut.isBefore(LocalDate.now())) {
-                        return null;
-                    }
-                    nombreDeJours = ChronoUnit.DAYS.between(dateDebut, dateFin) + 1;
-                    if (nombreDeJours > 0) {
-                        conge.setNombreDeJours((int) nombreDeJours);
-                        conge1.setNombreDeJours((int) nombreDeJours);
-                        conge1.setIdConge(idconge);
-                        conge1.setDateDebut(conge.getDateDebut());
-                        conge1.setDateFin(conge.getDateFin());
-                        congeRepo.save(conge1);
-                        return conge1;
-                    }
-                }
-            }
+            historiqueService.editHistoriqueEntryById(idconge, conge);
+            return congeRepo.save(conge);
         }
         return null;
     }

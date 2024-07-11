@@ -15,18 +15,23 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,11 +65,13 @@ public class AuthenticationService {
     return AuthenticationResponse.builder()
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
+            .id(user.getId()) // Assuming user.getId() returns Long
+            .email(user.getEmail())
+            .role(user.getRole()) // Assuming user.getRole() returns String
             .build();
-
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  /*public AuthenticationResponse authenticate(AuthenticationRequest request) {
     authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     request.getEmail(),
@@ -82,7 +89,37 @@ public class AuthenticationService {
             .refreshToken(refreshToken)
             .build();
   }
+*/
 
+  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword()
+            )
+    );
+
+    // Retrieve user details from repository
+    var user = repository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+    // Generate tokens
+    var jwtToken = jwtService.generateToken(user);
+    var refreshToken = jwtService.generateRefreshToken(user);
+
+    // Save refresh token or manage it based on your application's logic
+    revokeAllUserTokens(user); // Example method for revoking all tokens
+    saveUserToken(user, jwtToken); // Example method for saving user token
+
+    // Build AuthenticationResponse with id, email, role along with tokens
+    return AuthenticationResponse.builder()
+            .accessToken(jwtToken)
+            .refreshToken(refreshToken)
+            .id(user.getId()) // Assuming user.getId() returns Long
+            .email(user.getEmail())
+            .role(user.getRole()) // Assuming user.getRole() returns String
+            .build();
+  }
   private void saveUserToken(User user, String jwtToken) {
     var token = Token.builder()
             .user(user)

@@ -24,7 +24,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**","/api/v1/users/**",
+    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**","/api/v1/users/**","/api/employees/**","/reclamation/**","/api/historique/**","/event/**","equipe/**",
+            "/conge/**","/reclamation/**","/archived-reclamation/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",

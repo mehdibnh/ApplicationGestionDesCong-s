@@ -32,6 +32,7 @@ public class Employee  implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 30)
     private Role role;
 
     @Enumerated(EnumType.STRING)

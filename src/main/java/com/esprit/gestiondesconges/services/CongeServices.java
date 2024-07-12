@@ -1,5 +1,6 @@
 package com.esprit.gestiondesconges.services;
 
+import com.esprit.gestiondesconges.EmailService;
 import com.esprit.gestiondesconges.entities.Conge;
 import com.esprit.gestiondesconges.entities.Employee;
 import com.esprit.gestiondesconges.entities.Status;
@@ -36,6 +37,7 @@ public class CongeServices  implements ICongeServices {
     ICongeRepo congeRepo;
     EmployeeRepo emplpoerRepo ;
     HistoriqueService historiqueService;
+    EmailService  emailService ;
 
     @Override
     public Conge ajouterConge(Conge conge) {
@@ -129,7 +131,11 @@ public class CongeServices  implements ICongeServices {
                 employee.setSoldeConge(soldedecongedeemployer - nbjourconge);
                 emplpoerRepo.save(employee);
                 congeRepo.save(conge);
+                String subject = "Conge Accepter";
+                String message = String.format("Bonjour"+conge.getEmployee().getNom(),conge.getEmployee().getPrenom(),"Votre Conge est accepter avec success","**");
+                emailService.sendEmail(conge.getEmployee().getEmail(), subject, message); // Impleme
             }
+            return conge;
         }
         return conge;
     }
@@ -144,6 +150,9 @@ public class CongeServices  implements ICongeServices {
             Long idemployer = conge.getEmployee().getIdEmployee();
             Employee employee = emplpoerRepo.findById(idemployer).orElse(null);
             congeRepo.save(conge);
+            String subject = "Conge Refuser";
+            String message = String.format("Bonjour"+conge.getEmployee().getNom(),conge.getEmployee().getPrenom(),"Votre Conge est refuse","**");
+            emailService.sendEmail(conge.getEmployee().getEmail(), subject, message); // Impleme
         }
         return conge;
     }
